@@ -13,5 +13,23 @@ public class LectorTSP
     }
 
 
+    //get ruta
+    public String getRuta()
+    {
+        return ruta;
+    }
+//get matriz ciudades
+    public double[][] getCiudades()
+    {
+        return ciudades;
+    }
+//get matriz distancias
+    public double[][] getDistancias()
+    {
+        return distancias;
+    }
+
+
+
 
 }
