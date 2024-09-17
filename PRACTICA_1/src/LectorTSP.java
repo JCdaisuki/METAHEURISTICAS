@@ -50,8 +50,62 @@ public class LectorTSP
             }
         }
 
+
         //Divide la linea en dos partes separadas por ":" donde la segunda contiene el número de ciudades (Que se convierte en entero)
         int tam = Integer.parseInt(linea.split(":")[1].replace(" ", ""));
+
+        // Inicialización del array 'ciudades' y la variable 'linea'
+        ciudades = new double[tam][2];
+
+
+        // Leer la primera línea del archivo
+        try {
+            linea = b.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(LectorTSP.class.getName()).log(Level.SEVERE, "Error al leer la línea inicial", ex);
+            return; // Terminar la ejecución si no se puede leer la línea inicial
+        }
+
+        // Procesar las líneas hasta encontrar la correcta
+        while (linea != null && linea.split(" ").length != 3) {
+            try {
+                linea = b.readLine();
+            } catch (IOException ex) {
+                Logger.getLogger(LectorTSP.class.getName()).log(Level.SEVERE, "Error al leer la línea", ex);
+                return; // Terminar la ejecución si no se puede leer la línea
+            }
+        }
+
+        // Procesar las líneas de datos hasta encontrar "EOF"
+        while (linea != null && !linea.equals("EOF")) {
+            String[] split = linea.split(" ");
+
+            if (split.length == 3) {
+                try {
+                    int index = Integer.parseInt(split[0]) - 1;
+
+                    // Verificar que el índice esté dentro del rango válido
+                    if (index >= 0 && index < tam) {
+                        ciudades[index][0] = Double.parseDouble(split[1]);
+                        ciudades[index][1] = Double.parseDouble(split[2]);
+                    } else {
+                        Logger.getLogger(LectorTSP.class.getName()).log(Level.WARNING, "Índice fuera de rango: " + index);
+                    }
+                } catch (NumberFormatException e) {
+                    Logger.getLogger(LectorTSP.class.getName()).log(Level.WARNING, "Error en el formato de los números: " + linea, e);
+                }
+            } else {
+                Logger.getLogger(LectorTSP.class.getName()).log(Level.WARNING, "Formato de línea incorrecto: " + linea);
+            }
+
+            try {
+                linea = b.readLine();
+            } catch (IOException ex) {
+                Logger.getLogger(LectorTSP.class.getName()).log(Level.SEVERE, "Error al leer la siguiente línea", ex);
+                return; // Terminar la ejecución si no se puede leer la línea
+            }
+        }
+
     }
 
 
