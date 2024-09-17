@@ -50,13 +50,11 @@ public class LectorTSP
             }
         }
 
-
         //Divide la linea en dos partes separadas por ":" donde la segunda contiene el número de ciudades (Que se convierte en entero)
         int tam = Integer.parseInt(linea.split(":")[1].replace(" ", ""));
 
-        // Inicialización del array 'ciudades' y la variable 'linea'
+        // Inicialización del array 'ciudades'
         ciudades = new double[tam][2];
-
 
         // Leer la primera línea del archivo
         try {
@@ -77,37 +75,68 @@ public class LectorTSP
         }
 
         // Procesar las líneas de datos hasta encontrar "EOF"
-        while (linea != null && !linea.equals("EOF")) {
-            String[] split = linea.split(" ");
+        while (linea != null && !linea.equals("EOF"))
+        {
+            String[] split = linea.split(" "); // Divide la linea en tres partes
 
-            if (split.length == 3) {
-                try {
+            if (split.length == 3)
+            {
+                try
+                {
                     int index = Integer.parseInt(split[0]) - 1;
 
                     // Verificar que el índice esté dentro del rango válido
-                    if (index >= 0 && index < tam) {
-                        ciudades[index][0] = Double.parseDouble(split[1]);
-                        ciudades[index][1] = Double.parseDouble(split[2]);
-                    } else {
+                    if (index >= 0 && index < tam)
+                    {
+                        ciudades[index][0] = Double.parseDouble(split[1]); //Coordenada x
+                        ciudades[index][1] = Double.parseDouble(split[2]); //Coordenada y
+                    }
+                    else
+                    {
                         Logger.getLogger(LectorTSP.class.getName()).log(Level.WARNING, "Índice fuera de rango: " + index);
                     }
-                } catch (NumberFormatException e) {
+                }
+                catch (NumberFormatException e)
+                {
                     Logger.getLogger(LectorTSP.class.getName()).log(Level.WARNING, "Error en el formato de los números: " + linea, e);
                 }
-            } else {
+            }
+            else
+            {
                 Logger.getLogger(LectorTSP.class.getName()).log(Level.WARNING, "Formato de línea incorrecto: " + linea);
             }
 
-            try {
+            //Lee la siguiente linea
+            try
+            {
                 linea = b.readLine();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex)
+            {
                 Logger.getLogger(LectorTSP.class.getName()).log(Level.SEVERE, "Error al leer la siguiente línea", ex);
                 return; // Terminar la ejecución si no se puede leer la línea
             }
         }
 
-    }
+        //Inicializa la matriz de distancias
+        distancias = new double[tam][tam];
 
+        for(int i=0;i<tam;i++)
+        {
+            for(int j=i;j<tam;j++)
+            {
+                if(i == j)
+                {
+                    //La distancia de una ciudad consigo misma es infinita (Evitar que se tome a si misma como camino más corto)
+                    distancias[i][j] = Double.POSITIVE_INFINITY;
+                }
+                else
+                {
+                    distancias[i][j] = distancias[j][i] = Math.sqrt(Math.pow(ciudades[i][0] - ciudades[j][0], 2) + Math.pow(ciudades[i][1] - ciudades[j][1], 2));
+                }
+            }
+        }
+    }
 
     //Get ruta
     public String getRuta()
