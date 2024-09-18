@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +17,97 @@ public class LectorTSP
     private final String ruta;
     private double ciudades[][]; //Almacena las coordenadas de las ciudades
     private double distancias[][]; //Almacena las distancias entre ciudades
+
+    // Función auxiliar para calcular el coste de una solución
+    private double calcularCoste(List<Integer> sol, double[][] dist, int n)
+    {
+        double coste = 0.0;
+
+        // Sumar las distancias entre las ciudades consecutivas en la solución
+        for (int i = 0; i < n - 1; i++)
+        {
+            coste += dist[sol.get(i)][sol.get(i + 1)];
+        }
+
+        // Añadir la distancia desde la última ciudad hasta la primera para cerrar el ciclo
+        coste += dist[sol.get(0)][sol.get(n - 1)];
+        return coste;
+    }
+
+    // Función auxiliar para cargar la ciudad inicial en la solución
+    private void cargarInicial(int c, List<Integer> sol, List<Boolean> marcada)
+    {
+        sol.add(c);
+        marcada.set(c, true);
+    }
+
+    // Función Greedy para resolver el problema
+    public double greedy(double[][] dist, int n, List<Integer> sol)
+    {
+        // Vector de ciudades marcadas (Se inicializa con ninguna ciudad marcada como visitada  al inicio)
+        List<Boolean> visitada = new ArrayList<>(n);
+        for (int i = 0; i < n; i++)
+        {
+            visitada.add(false);
+        }
+
+        //Se establece una solución temporal
+        List<Integer> tempSol = new ArrayList<Integer>();
+        double menorCoste = Double.MAX_VALUE; //Menor distancia posible
+
+        for(int c = 0; c < n; c++)
+        {
+            // Inicializar la solución y marcar la ciudad inicial
+            cargarInicial(c, tempSol, visitada);
+
+            //Coste de la solución actual
+            double costeActual = 0.0;
+
+            //Vaciar la lista de visitadas para evitar conflicto con soluciones anteriores
+            visitada.clear();
+            for (int i = 0; i < n; i++) {
+                visitada.add(false);
+            }
+
+            // Búsqueda greedy
+            for (int i = 0; i < n - 1; i++)
+            {
+                double menorDist = Double.MAX_VALUE; //Menor distancia posible
+                int posMenor = 0; //Indice de la ciudad más cercana no visitada
+
+                // Busca la ciudad más cercana que no esté marcada
+                for (int j = 0; j < n; j++)
+                {
+                    //Se encuentra la ciudad más cercana no visitada
+                    if (!visitada.get(j) && dist[sol.get(i)][j] < menorDist) {
+                        menorDist = dist[sol.get(i)][j];
+                        posMenor = j;
+                    }
+                }
+
+                // Agregar la ciudad más cercana a la solución y marcarla
+                tempSol.set(i + 1, posMenor);
+                visitada.set(posMenor, true);
+
+                //Si el coste de esta solución ya supera a una anterior, descartamos la solución actual
+                if(calcularCoste(sol, dist, n) >= costeActual)
+                {
+                    continue;
+                }
+            }
+
+            //Comparación de soluciones
+            costeActual = calcularCoste(sol, dist, n);
+            if(costeActual < menorCoste)
+            {
+                sol = tempSol;
+                menorCoste = costeActual;
+            }
+        }
+
+        // Devolver el coste de la solución obtenida
+        return menorCoste;
+    }
 
     public LectorTSP(String ruta)
     {
