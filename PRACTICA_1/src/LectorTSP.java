@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 public class LectorTSP
 {
     private final String ruta;
-    private final double ciudades[][]; //Almacena las coordenadas de las ciudades
-    private final double distancias[][]; //Almacena las distancias entre ciudades
+    private double ciudades[][]; //Almacena las coordenadas de las ciudades
+    private double distancias[][]; //Almacena las distancias entre ciudades
 
     public LectorTSP(String ruta)
     {
@@ -132,6 +132,8 @@ public class LectorTSP
                 }
                 else
                 {
+                    //Calculamos la distancia entre dos ciudades empleando la fórmula de distancia euclidiana
+                    //Asumimos simetría
                     distancias[i][j] = distancias[j][i] = Math.sqrt(Math.pow(ciudades[i][0] - ciudades[j][0], 2) + Math.pow(ciudades[i][1] - ciudades[j][1], 2));
                 }
             }
