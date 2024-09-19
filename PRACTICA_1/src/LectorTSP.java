@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -90,11 +91,53 @@ public class LectorTSP
     }
 
     // Función Greedy para resolver el problema
-    public double Greedy(int k, double[][] dist, int n) // es double lo q devuelve ?
+    public double Greedy(int k, long seed) // es double lo q devuelve ?
     {
-        
-    List<CiudadesPair> ordenado =  OrdenarCiudades();
+        //Obtenemos un  vector que contiene las ciudades ordenadas de menor a mayor en base a su distancia total
+        List<CiudadesPair> ordenado =  OrdenarCiudades();
 
+        //Si k supera al número de ciudades reducimos k al mismo
+        if(k > ordenado.size())
+        {
+            k = ordenado.size();
+        }
+
+        //Vector solución que contiene el index de las ciudades seleccionadas
+        List<Integer> solucion = new ArrayList<>();
+        double distTotal = 0; //Distancia total de la solución
+        boolean visitada[] = new boolean[ordenado.size()]; //Contiene las ciudades ya visitadas para evitar repeticiones
+
+        //Establecemos que aún no se ha visitado ninguna ciudad
+        for(int i = 0; i < visitada.length; i++)
+        {
+            visitada[i] = false;
+        }
+
+        //Se obtienen aleatoriamente ciudades para la solución entre 0 y k
+        Random random = new Random(seed);
+
+        for(int i = 0; i < k;)
+        {
+            int ciudad =  random.nextInt(k);
+            int ciudadAnt = -1;
+
+            if(!visitada[ciudad]) //Evita escoger ciudades ya selecionadas
+            {
+                solucion.add(ciudad);
+                visitada[ciudad] = true;
+
+                if(ciudadAnt != -1) //Es la primera ciudad en añadirse
+                {
+                    distTotal += distancias[ciudad][ciudadAnt];
+                    ciudadAnt = ciudad;
+                }
+
+                i++;
+            }
+        }
+
+        //Calcula la distancia
+        return distTotal;
     }
 
     public LectorTSP(String ruta)
@@ -174,10 +217,7 @@ public class LectorTSP
                     if (i != j)
                     {
                         // Calcula la distancia euclidiana entre las ciudades (i, j).
-                        distancias[i][j] = distancias[j][i] = Math.sqrt(
-                                Math.pow(ciudades[i][0] - ciudades[j][0], 2) +
-                                        Math.pow(ciudades[i][1] - ciudades[j][1], 2)
-                        );
+                        distancias[i][j] = distancias[j][i] = Math.sqrt(Math.pow(ciudades[i][0] - ciudades[j][0], 2) + Math.pow(ciudades[i][1] - ciudades[j][1], 2));
                     }
                     else
                     {
