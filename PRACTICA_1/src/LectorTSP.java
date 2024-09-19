@@ -116,10 +116,21 @@ public class LectorTSP
         //Se obtienen aleatoriamente ciudades para la solución entre 0 y k
         Random random = new Random(seed);
 
+        //Se añade la primera ciudad
+        int ciudad =  random.nextInt(k);
+        int ciudadInicial = ciudad;
+        int almacen_ante = ciudad;
+        int ciudadAnt;
+
+        solucion.add(ciudad);
+        visitada[ciudad] = true;
+            ciudadAnt = ciudad;
+
         for(int i = 0; i < k;)
         {
-            int ciudad =  random.nextInt(k);
-            int ciudadAnt = -1;
+            ciudad =  random.nextInt(k);
+            almacen_ante = ciudad;
+            ciudadAnt = -1;
 
             if(!visitada[ciudad]) //Evita escoger ciudades ya selecionadas
             {
@@ -134,6 +145,8 @@ public class LectorTSP
 
                 i++;
             }
+
+            distTotal += distancias[ciudadAnt][ciudadInicial];
         }
 
         //Calcula la distancia
