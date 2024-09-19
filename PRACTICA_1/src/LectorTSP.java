@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Pareja 11
  * @author Juan Carlos Gonzalez Martinez
  * @author Jose Antonio Mayoral Luna
  */
@@ -42,11 +43,11 @@ public class LectorTSP
     }
 
     // Función Greedy para resolver el problema
-    public greedy(double[][] dist, int n, List<Integer> sol)
+    /*public greedy(double[][] dist, int n, List<Integer> sol)
     {
-        
-    }
 
+    }
+*/
     public LectorTSP(String ruta)
     {
         // Se guarda la ruta sin la extensión.
