@@ -12,7 +12,7 @@ public class Main
     public static void main(String[] args)
     {
         // Define la ruta del archivo
-        String rutaArchivo = "C:\\Users\\JuanC\\Music\\CURSO_2425\\METAHEURISTICAS\\METAHEURISTICAS\\PRACTICA_1\\pr144.tsp";
+        String rutaArchivo = "C:\\Users\\JuanC\\Music\\CURSO_2425\\METAHEURISTICAS\\METAHEURISTICAS\\PRACTICA_1\\ch130.tsp";
         
         // Crear un objeto LectorTSP para leer las ciudades desde el archivo
         LectorTSP lector = new LectorTSP(rutaArchivo);

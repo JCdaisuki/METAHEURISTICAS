@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,9 +19,32 @@ public class LectorTSP
     private final String ruta;
     private double ciudades[][]; //Almacena las coordenadas de las ciudades
     private double distancias[][]; //Almacena las distancias entre ciudades
+    
+    //Clase auxiliar para el ordenamiento del vector
+    private class CiudadesPair
+    {
+        private double[] ciudad; //Contiene las coordenadas de la ciudad
+        private double distTotal; //Distancia total de la ciudad al resto de ciudades
 
+        CiudadesPair(double[] c, double d)
+        {
+            ciudad = c;
+            distTotal = d;
+        }
+
+        public double[] GetCiudad()
+        {
+            return ciudad;
+        }
+
+        public double GetDistTotal()
+        {
+            return distTotal;
+        }
+    }
+    private CiudadesPair sol_greedy_act ;
     // Función auxiliar para calcular el coste de una solución
-    private double calcularCoste(List<Integer> sol, double[][] dist, int n)
+    private double CalcularCoste(List<Integer> sol, double[][] dist, int n)
     {
         double coste = 0.0;
 
@@ -35,19 +59,44 @@ public class LectorTSP
         return coste;
     }
 
-    // Función auxiliar para cargar la ciudad inicial en la solución
-    private void cargarInicial(int c, List<Integer> sol, List<Boolean> marcada)
+    //Función auxiliar para ordenar el vector de ciudades en orden de menor a mayor distancia total al resto de ciudades
+    private List<CiudadesPair> OrdenarCiudades()
     {
-        sol.add(c);
-        marcada.set(c, true);
+        List<CiudadesPair> ciudadesPairs = new ArrayList<>();
+
+        //Calcular la distancia total para cada ciudad
+        for (int i = 0; i < ciudades.length; i++)
+        {
+            double distTotal = 0;
+
+            //Sumar las distancias de la ciudad 'i' con todas las demás
+            for (int j = 0; j < ciudades.length; j++)
+            {
+                if (i != j)
+                {
+                    distTotal += distancias[i][j];
+                }
+            }
+
+            //Crear un CiudadesPair para la ciudad 'i' con su distancia total
+            CiudadesPair cp = new CiudadesPair(ciudades[i], distTotal);
+            ciudadesPairs.add(cp);
+        }
+
+        // Ordenar la lista de ciudades por la distancia total, de menor a mayor
+        ciudadesPairs.sort((c1, c2) -> Double.compare(c1.GetDistTotal(), c2.GetDistTotal()));
+
+        return ciudadesPairs;
     }
 
     // Función Greedy para resolver el problema
-    /*public greedy(double[][] dist, int n, List<Integer> sol)
+    public double Greedy(int k, double[][] dist, int n) // es double lo q devuelve ?
     {
+        
+    List<CiudadesPair> ordenado =  OrdenarCiudades();
 
     }
-*/
+
     public LectorTSP(String ruta)
     {
         // Se guarda la ruta sin la extensión.
