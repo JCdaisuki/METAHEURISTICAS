@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Pareja
  * @author Juan Carlos Gonzalez Martinez
  * @author Jose Antonio Mayoral Luna
  */
@@ -27,7 +28,7 @@ public class Main
         }
 
         System.out.println("Matriz de distancias:");
-        
+
         for (int i = 0; i < distancias.length; i++)
         {
             for (int j = 0; j < distancias[i].length; j++)

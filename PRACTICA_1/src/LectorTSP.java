@@ -42,71 +42,9 @@ public class LectorTSP
     }
 
     // Función Greedy para resolver el problema
-    public double greedy(double[][] dist, int n, List<Integer> sol)
+    public greedy(double[][] dist, int n, List<Integer> sol)
     {
-        // Vector de ciudades marcadas (Se inicializa con ninguna ciudad marcada como visitada  al inicio)
-        List<Boolean> visitada = new ArrayList<>(n);
-        for (int i = 0; i < n; i++)
-        {
-            visitada.add(false);
-        }
-
-        //Se establece una solución temporal
-        List<Integer> tempSol = new ArrayList<Integer>();
-        double menorCoste = Double.MAX_VALUE; //Menor distancia posible
-
-        for(int c = 0; c < n; c++)
-        {
-            // Inicializar la solución y marcar la ciudad inicial
-            cargarInicial(c, tempSol, visitada);
-
-            //Coste de la solución actual
-            double costeActual = 0.0;
-
-            //Vaciar la lista de visitadas para evitar conflicto con soluciones anteriores
-            visitada.clear();
-            for (int i = 0; i < n; i++) {
-                visitada.add(false);
-            }
-
-            // Búsqueda greedy
-            for (int i = 0; i < n - 1; i++)
-            {
-                double menorDist = Double.MAX_VALUE; //Menor distancia posible
-                int posMenor = 0; //Indice de la ciudad más cercana no visitada
-
-                // Busca la ciudad más cercana que no esté marcada
-                for (int j = 0; j < n; j++)
-                {
-                    //Se encuentra la ciudad más cercana no visitada
-                    if (!visitada.get(j) && dist[sol.get(i)][j] < menorDist) {
-                        menorDist = dist[sol.get(i)][j];
-                        posMenor = j;
-                    }
-                }
-
-                // Agregar la ciudad más cercana a la solución y marcarla
-                tempSol.set(i + 1, posMenor);
-                visitada.set(posMenor, true);
-
-                //Si el coste de esta solución ya supera a una anterior, descartamos la solución actual
-                if(calcularCoste(sol, dist, n) >= costeActual)
-                {
-                    continue;
-                }
-            }
-
-            //Comparación de soluciones
-            costeActual = calcularCoste(sol, dist, n);
-            if(costeActual < menorCoste)
-            {
-                sol = tempSol;
-                menorCoste = costeActual;
-            }
-        }
-
-        // Devolver el coste de la solución obtenida
-        return menorCoste;
+        
     }
 
     public LectorTSP(String ruta)
