@@ -5,8 +5,7 @@ public class Main {
     public static void main(String[] args) {
         // Define la ruta del archivo
         String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\pr144.tsp";
-
-
+        
         // Crear un objeto LectorTSP para leer las ciudades desde el archivo
         LectorTSP lector = new LectorTSP(rutaArchivo);
 
