@@ -60,31 +60,30 @@ public class Greedy {
         //Se añade la primera ciudad
         int ciudad =  random.nextInt(k);
         int ciudadInicial = ciudad;
-        int almacen_ante = ciudad;
-        int ciudadAnt;
-
         solucion.add(ciudad);
         visitada[ciudad] = true;
-        ciudadAnt = ciudad;
+        int ciudadAnt = ciudad;
 
         for(int i = 0; i < k;)
         {
-            ciudad = random.nextInt(k);
+            ciudad = random.nextInt(ordenado.size());
             // Quitamos la siguiente línea
-            // ciudadAnt = -1;
+            //ciudadAnt = -1;
 
             if (!visitada[ciudad]) {
                 solucion.add(ciudad);
                 visitada[ciudad] = true;
 
-                if (ciudadAnt != -1) { // Es la primera ciudad en añadirse
                     distTotal += lector.getDistancias()[ciudad][ciudadAnt];
                 }
 
                 ciudadAnt = ciudad; // Actualizamos `ciudadAnt` aquí
                 i++;
             }
-             }
+        //suma de la distancia para volver al inicio
+        distTotal += lector.getDistancias()[ciudadInicial][ciudad];
+
+
 
         //Calcula la distancia
         return distTotal;
@@ -105,7 +104,7 @@ public class Greedy {
             {
                 if (i != j)
                 {
-                        distTotal += lector.getCiudades()[i][j];
+                    distTotal += lector.getDistancias()[i][j];
                 }
             }
 

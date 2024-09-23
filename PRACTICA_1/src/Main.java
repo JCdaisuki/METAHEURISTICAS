@@ -13,7 +13,7 @@ public class Main
     public static void main(String[] args)
     {
         // Define la ruta del archivo
-        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\ch130.tsp";
+        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\pr144.tsp";
         
         // Crear un objeto LectorTSP para leer las ciudades desde el archivo
        LectorTSP lector = new LectorTSP(rutaArchivo);
@@ -31,7 +31,8 @@ public class Main
             System.out.println(); // Nueva línea
         }
         Greedy greedy = new Greedy();
-        System.out.printf("Greedy: " , greedy.realizagreedy(5,20622008,lector) );
+        double distancia = greedy.realizagreedy(5,20622008,lector);
+        System.out.printf("Greedy: %f\n", distancia);
     }
 }
 
