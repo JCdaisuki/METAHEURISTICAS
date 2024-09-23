@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
-
+import procesadoFicheros.*;
+import Algoritmos.Greedy;
 /**
  * Pareja 11
  * @author Juan Carlos Gonzalez Martinez
@@ -12,10 +13,10 @@ public class Main
     public static void main(String[] args)
     {
         // Define la ruta del archivo
-        String rutaArchivo = "C:\\Users\\JuanC\\Music\\CURSO_2425\\METAHEURISTICAS\\METAHEURISTICAS\\PRACTICA_1\\ch130.tsp";
+        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\ch130.tsp";
         
         // Crear un objeto LectorTSP para leer las ciudades desde el archivo
-        LectorTSP lector = new LectorTSP(rutaArchivo);
+       LectorTSP lector = new LectorTSP(rutaArchivo);
 
         double[][] distancias = lector.getDistancias();
         int numCiudades = distancias.length;
@@ -29,7 +30,8 @@ public class Main
             }
             System.out.println(); // Nueva línea
         }
-
+        Greedy greedy = new Greedy();
+        System.out.printf("Greedy: " , greedy.realizagreedy(5,20622008,lector) );
     }
 }
 
