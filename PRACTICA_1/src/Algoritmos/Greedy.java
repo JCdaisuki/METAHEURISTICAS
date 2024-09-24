@@ -67,7 +67,7 @@ public class Greedy
 
         for(int i = 0; i < k; i++)
         {
-            ciudad = random.nextInt(ordenado.size());
+            ciudad = random.nextInt(k);
 
             if (!visitada[ciudad])
             {
