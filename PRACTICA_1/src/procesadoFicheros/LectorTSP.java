@@ -10,14 +10,12 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LectorTSP {
+public class LectorTSP
+{
 
-    private final String ruta;
+    private String ruta = "";
     private double ciudades[][]; //Almacena las coordenadas de las ciudades
     private double distancias[][]; //Almacena las distancias entre ciudades
-
-
-
 
     public LectorTSP(String ruta)
     {

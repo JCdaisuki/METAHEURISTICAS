@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Greedy {
+public class Greedy
+{
     //Clase auxiliar para el ordenamiento del vector
     private class CiudadesPair
     {
@@ -31,8 +32,8 @@ public class Greedy {
     private Greedy.CiudadesPair sol_greedy_act ;
 
 
-    //funcion para realizar el greedy
-    public double realizagreedy(int k, long seed, LectorTSP lector) // es double lo q devuelve ?
+    //Función que realiza el algoritmo Greedy Aleatorio
+    public double RealizarGreedy(int k, long seed, LectorTSP lector)
     {
         //Obtenemos un  vector que contiene las ciudades ordenadas de menor a mayor en base a su distancia total
         List<Greedy.CiudadesPair> ordenado =  OrdenarCiudades(lector);
@@ -64,26 +65,21 @@ public class Greedy {
         visitada[ciudad] = true;
         int ciudadAnt = ciudad;
 
-        for(int i = 0; i < k;)
+        for(int i = 0; i < k; i++)
         {
-            ciudad = random.nextInt(ordenado.size());
-            // Quitamos la siguiente línea
-            //ciudadAnt = -1;
+            ciudad = random.nextInt(k);
 
-            if (!visitada[ciudad]) {
+            if (!visitada[ciudad])
+            {
                 solucion.add(ciudad);
                 visitada[ciudad] = true;
 
-                    distTotal += lector.getDistancias()[ciudad][ciudadAnt];
-                }
-
-                ciudadAnt = ciudad; // Actualizamos `ciudadAnt` aquí
-                i++;
+                distTotal += lector.getDistancias()[ciudad][ciudadAnt];
+                ciudadAnt = ciudad;
             }
+        }
         //suma de la distancia para volver al inicio
         distTotal += lector.getDistancias()[ciudadInicial][ciudad];
-
-
 
         //Calcula la distancia
         return distTotal;
@@ -135,8 +131,8 @@ public class Greedy {
         coste += dist[sol.get(0)][sol.get(n - 1)];
         return coste;
     }
+
     public Greedy() {
         this.sol_greedy_act = null;
     }
-
 }

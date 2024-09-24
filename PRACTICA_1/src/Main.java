@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 import procesadoFicheros.*;
 import Algoritmos.Greedy;
 /**
@@ -31,7 +29,7 @@ public class Main
             System.out.println(); // Nueva línea
         }
         Greedy greedy = new Greedy();
-        double distancia = greedy.realizagreedy(5,20622008,lector);
+        double distancia = greedy.RealizarGreedy(5,20622008,lector);
         System.out.printf("Greedy: %f\n", distancia);
     }
 }
