@@ -14,7 +14,7 @@ public class Main
         long startTime = System.currentTimeMillis();
 
         // Define la ruta del archivo
-        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\u1060.tsp";
+        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\ch130.tsp";
         
         // Crear un objeto LectorTSP para leer las ciudades desde el archivo
         LectorTSP lector = new LectorTSP(rutaArchivo);
@@ -33,8 +33,21 @@ public class Main
         }
 
         Greedy greedy = new Greedy();
-        double distancia = greedy.RealizarGreedy(5,20622008,lector);
-        System.out.printf("Greedy: %f\n", distancia);
+        // DNI base
+        String dni = "20622008";
+
+        // Realizar 5 iteraciones desplazando los números del DNI
+        for (int iteracion = 0; iteracion < 5; iteracion++) {
+            // Desplazar el primer dígito al final
+            dni = dni.substring(1) + dni.charAt(0);
+
+            // Convertir la cadena de DNI a número
+            long dniNumerico = Long.parseLong(dni);
+
+            // Ejecutar el algoritmo Greedy con el nuevo DNI desplazado
+            double distancia = greedy.RealizarGreedy(5, dniNumerico, lector);
+            System.out.printf("Iteración %d (DNI: %s) - Greedy: %f\n", iteracion + 1, dni, distancia);
+        }
 
         //Tiempo de finalización del programa
         long endTime = System.currentTimeMillis();
