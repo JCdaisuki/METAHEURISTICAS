@@ -10,11 +10,14 @@ public class Main
 {
     public static void main(String[] args)
     {
+        //Tiempo de inicio del programa
+        long startTime = System.currentTimeMillis();
+
         // Define la ruta del archivo
-        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\pr144.tsp";
+        String rutaArchivo = "C:\\Users\\JuanC\\Music\\CURSO_2425\\METAHEURISTICAS\\METAHEURISTICAS\\PRACTICA_1\\d18512.tsp";
         
         // Crear un objeto LectorTSP para leer las ciudades desde el archivo
-       LectorTSP lector = new LectorTSP(rutaArchivo);
+        LectorTSP lector = new LectorTSP(rutaArchivo);
 
         double[][] distancias = lector.getDistancias();
         int numCiudades = distancias.length;
@@ -28,9 +31,16 @@ public class Main
             }
             System.out.println(); // Nueva línea
         }
+
         Greedy greedy = new Greedy();
         double distancia = greedy.RealizarGreedy(5,20622008,lector);
         System.out.printf("Greedy: %f\n", distancia);
+
+        //Tiempo de finalización del programa
+        long endTime = System.currentTimeMillis();
+
+        //Mostrar el tiempo de ejecución del programa
+        System.out.println("Tiempo de ejecución: " + (endTime - startTime) + " milisegundos");
     }
 }
 
