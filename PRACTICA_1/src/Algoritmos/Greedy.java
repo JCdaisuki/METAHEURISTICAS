@@ -9,6 +9,7 @@ public class Greedy
     //Clase auxiliar para el ordenamiento del vector
     private class CiudadesPair
     {
+        //TODO : eliminar atributo ciudad
         private int indice;
         private double[] ciudad; //Contiene las coordenadas de la ciudad
         private double distTotal; //Distancia total de la ciudad al resto de ciudades

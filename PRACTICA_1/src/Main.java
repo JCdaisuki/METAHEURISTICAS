@@ -14,14 +14,14 @@ public class Main
         long startTime = System.currentTimeMillis();
 
         // Define la ruta del archivo
-        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\ch130.tsp";
+        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\d18512.tsp";
         
         // Crear un objeto LectorTSP para leer las ciudades desde el archivo
         LectorTSP lector = new LectorTSP(rutaArchivo);
 
         double[][] distancias = lector.getDistancias();
         int numCiudades = distancias.length;
-
+/*
         System.out.println("Matriz de distancias:");
         for (int i = 0; i < distancias.length; i++)
         {
@@ -31,7 +31,7 @@ public class Main
             }
             System.out.println(); // Nueva línea
         }
-
+*/
         Greedy greedy = new Greedy();
         // DNI base
         String dni = "20622008";
