@@ -10,18 +10,16 @@ public class Main
 {
     public static void main(String[] args)
     {
-        //Tiempo de inicio del programa
-        long startTime = System.currentTimeMillis();
-
         // Define la ruta del archivo
-        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\d18512.tsp";
+        String rutaArchivo = "";
         
         // Crear un objeto LectorTSP para leer las ciudades desde el archivo
         LectorTSP lector = new LectorTSP(rutaArchivo);
 
         double[][] distancias = lector.getDistancias();
-        int numCiudades = distancias.length;
+
 /*
+        //Mostrar matriz de distancias
         System.out.println("Matriz de distancias:");
         for (int i = 0; i < distancias.length; i++)
         {
@@ -34,26 +32,31 @@ public class Main
 */
         Greedy greedy = new Greedy();
         // DNI base
-        String dni = "20622008";
+        String seed = "20622008";
+        int nIteraciones = 5;
 
         // Realizar 5 iteraciones desplazando los números del DNI
-        for (int iteracion = 0; iteracion < 5; iteracion++) {
+        for (int iteracion = 0; iteracion < nIteraciones; iteracion++)
+        {
+            //Tiempo de inicio de la iteración
+            long startTime = System.currentTimeMillis();
+
             // Desplazar el primer dígito al final
-            dni = dni.substring(1) + dni.charAt(0);
+            seed = seed.substring(1) + seed.charAt(0);
 
             // Convertir la cadena de DNI a número
-            long dniNumerico = Long.parseLong(dni);
+            long dniNumerico = Long.parseLong(seed);
 
             // Ejecutar el algoritmo Greedy con el nuevo DNI desplazado
             double distancia = greedy.RealizarGreedy(5, dniNumerico, lector);
-            System.out.printf("Iteración %d (DNI: %s) - Greedy: %f\n", iteracion + 1, dni, distancia);
+            System.out.printf("Iteración %d (Seed: %s) - Greedy: %f\n", iteracion + 1, seed, distancia);
+
+            //Tiempo de finalización de la iteración
+            long endTime = System.currentTimeMillis();
+
+            //Mostrar el tiempo de ejecución
+            System.out.println("Tiempo de ejecución: " + (endTime - startTime) + " milisegundos");
         }
-
-        //Tiempo de finalización del programa
-        long endTime = System.currentTimeMillis();
-
-        //Mostrar el tiempo de ejecución del programa
-        System.out.println("Tiempo de ejecución: " + (endTime - startTime) + " milisegundos");
     }
 }
 
