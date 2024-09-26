@@ -1,64 +1,88 @@
-import procesadoFicheros.*;
+import procesadoFicheros.CreaLogs;
 import Algoritmos.Greedy;
-/**
- * Pareja 11
- * @author Juan Carlos Gonzalez Martinez
- * @author Jose Antonio Mayoral Luna
- */
+import procesadoFicheros.LectorTSP;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        // Define la ruta del archivo
-        String rutaArchivo = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\pr144.tsp";
-        
-        // Crear un objeto LectorTSP para leer las ciudades desde el archivo
-        LectorTSP lector = new LectorTSP(rutaArchivo);
+        // Archivos de problemas .tsp
+        String[] archivosTSP = {
+                "a280.tsp",
+                "pr144.tsp",
+                "ch130.tsp",
+                "d18512.tsp",
+                "u1060.tsp"
+        };
 
-        double[][] distancias = lector.getDistancias();
+        // Ruta base para los archivos .tsp
+        String rutaBase = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\";
 
-/*
-        //Mostrar matriz de distancias
-        System.out.println("Matriz de distancias:");
-        for (int i = 0; i < distancias.length; i++)
-        {
-            for (int j = 0; j < distancias[i].length; j++)
-            {
-                System.out.printf("%.2f ", distancias[i][j]);
-            }
-            System.out.println(); // Nueva línea
-        }
-*/
-        Greedy greedy = new Greedy();
+        // Ruta para la carpeta de logs
+        String rutaLogs = rutaBase + "log\\";
 
         // DNI base
         String seed = "20622008";
         int nIteraciones = 5;
         int k = 5;
-            
-        // Realizar 5 iteraciones desplazando los números del DNI
-        for (int iteracion = 0; iteracion < nIteraciones; iteracion++)
+
+        // Bucle para cada archivo .tsp
+        for (int i = 0; i < archivosTSP.length; i++)
         {
-            //Tiempo de inicio de la iteración
-            long startTime = System.currentTimeMillis();
+            String archivoTSP = archivosTSP[i];
+            String rutaArchivo = rutaBase + archivoTSP;
 
-            // Desplazar el primer dígito al final
-            seed = seed.substring(1) + seed.charAt(0);
+            // Crear un objeto LectorTSP para leer las ciudades desde el archivo
+            LectorTSP lector = new LectorTSP(rutaArchivo);
+            double[][] distancias = lector.getDistancias();
 
-            // Convertir la cadena de DNI a número
-            long dniNumerico = Long.parseLong(seed);
+            // Instancia del algoritmo Greedy
+            Greedy greedy = new Greedy();
 
-            // Ejecutar el algoritmo Greedy con el nuevo DNI desplazado
-            double distancia = greedy.RealizarGreedy(k, dniNumerico, lector);
-            System.out.printf("Iteración %d (Seed: %s) - Greedy: %f\n", iteracion + 1, seed, distancia);
+            // Bucle para las iteraciones con diferentes semillas
+            String currentSeed = seed;
+            for (int iteracion = 0; iteracion < nIteraciones; iteracion++)
+            {
+                // Tiempo de inicio de la iteración
+                long startTime = System.currentTimeMillis();
 
-            //Tiempo de finalización de la iteración
-            long endTime = System.currentTimeMillis();
+                // Desplazar el primer dígito al final
+                currentSeed = currentSeed.substring(1) + currentSeed.charAt(0);
 
-            //Mostrar el tiempo de ejecución
-            System.out.println("Tiempo de ejecución: " + (endTime - startTime) + " milisegundos");
+                // Convertir la cadena de DNI a número
+                long dniNumerico = Long.parseLong(currentSeed);
+
+                // Ejecutar el algoritmo Greedy con el nuevo DNI desplazado
+                double distancia = greedy.RealizarGreedy(k, dniNumerico, lector);
+
+                // Nombre del archivo de log basado en el archivo .tsp y la semilla ( creacion del txt incluida )
+                String rutaLog = rutaLogs + "log_" + archivoTSP.replace(".tsp", "") + "_" + currentSeed + ".txt";
+                CreaLogs log = new CreaLogs(rutaLog);
+
+                // Generar mensaje de log y consola
+                String mensaje = String.format("Iteración %d (Seed: %s) - Greedy: %f", iteracion + 1, currentSeed, distancia);
+                logAndPrint(log, mensaje);
+
+                // Tiempo de finalización de la iteración
+                long endTime = System.currentTimeMillis();
+                long duracion = endTime - startTime;
+
+                // Mostrar y registrar el tiempo de ejecución
+                logAndPrint(log, "Tiempo de ejecución: " + duracion + " milisegundos");
+
+                // Cerrar el archivo de log para esta iteración
+                log.cerrarLog();
+            }
         }
     }
-}
 
+    /**
+     * Función para escribir el mensaje en el log y en la consola.
+     * @param log El objeto CreaLogs que se encargará de escribir en el archivo.
+     * @param mensaje El mensaje que será mostrado en consola y escrito en el log.
+     */
+    public static void logAndPrint(CreaLogs log, String mensaje) {
+        System.out.println(mensaje); // Mostrar en consola
+        //log.escribirLog(mensaje);    // Escribir en el archivo de log
+    }
+}

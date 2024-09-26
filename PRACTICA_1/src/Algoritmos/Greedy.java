@@ -52,6 +52,7 @@ public class Greedy
         int indice = ordenado.get(ciudad).indice;
         int indice_ini = indice;
         int indice_ant= indice;
+        solucion.add(ordenado.get(ciudad));
         ordenado.remove(ciudad);
 
         for(int i = 0; i < tam_ordenado-1; i++)
@@ -110,6 +111,7 @@ public class Greedy
             //Crear un CiudadInfo para la ciudad 'i' con su distancia total
             CiudadInfo cp = new CiudadInfo(i, distTotal);
             ciudadInfos.add(cp);
+
         }
 
         // Ordenar la lista de ciudades por la distancia total, de menor a mayor
