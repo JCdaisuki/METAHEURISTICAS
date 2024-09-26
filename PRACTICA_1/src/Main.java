@@ -1,6 +1,11 @@
 import procesadoFicheros.CreaLogs;
 import Algoritmos.Greedy;
 import procesadoFicheros.LectorTSP;
+import Algoritmos.BusquedaLocal;
+import java.util.Random;
+
+
+import java.lang.reflect.Array;
 
 public class Main
 {
@@ -53,16 +58,16 @@ public class Main
                 long dniNumerico = Long.parseLong(currentSeed);
 
                 // Ejecutar el algoritmo Greedy con el nuevo DNI desplazado
-                double distancia = greedy.RealizarGreedy(k, dniNumerico, lector);
+                int[] distancia = greedy.RealizarGreedy(k, dniNumerico, lector);
 
                 // Nombre del archivo de log basado en el archivo .tsp y la semilla ( creacion del txt incluida )
                 String rutaLog = rutaLogs + "log_" + archivoTSP.replace(".tsp", "") + "_" + currentSeed + ".txt";
                 CreaLogs log = new CreaLogs(rutaLog);
 
                 // Generar mensaje de log y consola
-                String mensaje = String.format("Iteración %d (Seed: %s) - Greedy: %f", iteracion + 1, currentSeed, distancia);
+                String mensaje = String.format("Iteración %d (Seed: %s) - Greedy: %f", iteracion + 1, currentSeed, greedy.getMejor_coste());
                 logAndPrint(log, mensaje);
-
+                busqueda_local_test(5000,8,10,10,lector,dniNumerico,distancia);
                 // Tiempo de finalización de la iteración
                 long endTime = System.currentTimeMillis();
                 long duracion = endTime - startTime;
@@ -84,5 +89,13 @@ public class Main
     public static void logAndPrint(CreaLogs log, String mensaje) {
         System.out.println(mensaje); // Mostrar en consola
         //log.escribirLog(mensaje);    // Escribir en el archivo de log
+    }
+
+    public static void busqueda_local_test(int numIteraciones, int tamEntornoInicial, double porcientoASubir, double   ratioDeSubida, LectorTSP lector, long seed , int[] distancia ){
+        Random random = new Random(seed);
+        BusquedaLocal busquedaLocal = new BusquedaLocal(numIteraciones, tamEntornoInicial, porcientoASubir, ratioDeSubida, lector, random);
+        double mejorCosteFinal = busquedaLocal.realizar_busqueda(distancia);
+        System.out.println("Mejor coste encontrado después de la Búsqueda Local: " + mejorCosteFinal);
+
     }
 }
