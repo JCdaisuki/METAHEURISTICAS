@@ -89,8 +89,6 @@ public class Greedy
         distTotal += lector.getDistancias()[indice_ini][indice];
 
         //Número de ciudades recorridas en la solución
-        System.out.printf("\nTam : %d\n", solucion.size());
-
         return distTotal;
     }
 
