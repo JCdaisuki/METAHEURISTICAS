@@ -31,6 +31,7 @@ public class Main
         }
 */
         Greedy greedy = new Greedy();
+
         // DNI base
         String seed = "20622008";
         int nIteraciones = 5;

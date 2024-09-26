@@ -25,11 +25,7 @@ public class Greedy
         public int getIndice(){return indice;}
     }
 
-    private CiudadInfo sol_greedy_act ;
-
-    public Greedy() {
-        this.sol_greedy_act = null;
-    }
+    public Greedy(){}
 
     //Función que realiza el algoritmo Greedy Aleatorio
     public double RealizarGreedy(int k, long seed, LectorTSP lector)
