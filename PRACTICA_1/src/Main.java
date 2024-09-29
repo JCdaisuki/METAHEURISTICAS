@@ -21,7 +21,7 @@ public class Main
         };
 
         // Ruta base para los archivos .tsp
-        String rutaBase = "C:\\Githubs de clase\\Meta\\METAHEURISTICAS\\PRACTICA_1\\";
+        String rutaBase = "..\\METAHEURISTICAS\\PRACTICA_1\\";
 
         // Ruta para la carpeta de logs
         String rutaLogs = rutaBase + "log\\";
@@ -67,7 +67,8 @@ public class Main
                 // Generar mensaje de log y consola
                 String mensaje = String.format("Iteración %d (Seed: %s) - Greedy: %f", iteracion + 1, currentSeed, greedy.getMejor_coste());
                 logAndPrint(log, mensaje);
-                busqueda_local_test(5000,8,10,10,lector,dniNumerico,distancia);
+                //busqueda_local_test(5000,8,10,10,lector,dniNumerico,distancia);
+
                 // Tiempo de finalización de la iteración
                 long endTime = System.currentTimeMillis();
                 long duracion = endTime - startTime;

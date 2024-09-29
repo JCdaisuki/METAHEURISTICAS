@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class LectorTSP
 {
 
-    private String ruta = "C:\\Users\\JuanC\\Music\\CURSO_2425\\METAHEURISTICAS\\METAHEURISTICAS\\PRACTICA_1\\a280.tsp";
+    private String ruta = "..\\METAHEURISTICAS\\PRACTICA_1\\a280.tsp";
     private double ciudades[][]; //Almacena las coordenadas de las ciudades
     private double distancias[][]; //Almacena las distancias entre ciudades
 
