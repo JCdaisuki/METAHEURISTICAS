@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Greedy {
+public class Greedy
+{
     // Clase auxiliar para el ordenamiento del vector
     private class CiudadInfo {
         private int indice;
@@ -23,12 +24,18 @@ public class Greedy {
         }
     }
 
-    private double mejor_coste;
-    public double getMejor_coste() {return mejor_coste;}
+    private double mejorCoste;
+
+    public double GetMejorCoste()
+    {
+        return mejorCoste;
+    }
+
     public Greedy() {}
 
     // Función que realiza el algoritmo Greedy Aleatorio
-    public int[] RealizarGreedy(int k, long seed, LectorTSP lector) {
+    public int[] RealizarGreedy(int k, long seed, LectorTSP lector)
+    {
         List<CiudadInfo> ordenado = OrdenarCiudades(lector);
 
         if (k > ordenado.size()) {
@@ -73,14 +80,19 @@ public class Greedy {
 
         // Convertir la lista de índices a un arreglo y devolverlo
         int[] resultado = new int[solucion.size()];
-        for (int i = 0; i < solucion.size(); i++) {
+
+        for (int i = 0; i < solucion.size(); i++)
+        {
             resultado[i] = solucion.get(i);
         }
-        mejor_coste = distTotal;
-        return resultado;    }
+
+        mejorCoste = distTotal;
+        return resultado;
+        }
 
     // Función auxiliar para ordenar el vector de ciudades en orden de menor a mayor distancia total al resto de ciudades
-    private List<CiudadInfo> OrdenarCiudades(LectorTSP lector) {
+    private List<CiudadInfo> OrdenarCiudades(LectorTSP lector)
+    {
         List<CiudadInfo> ciudadInfos = new ArrayList<>();
 
         for (int i = 0; i < lector.getCiudades().length; i++) {

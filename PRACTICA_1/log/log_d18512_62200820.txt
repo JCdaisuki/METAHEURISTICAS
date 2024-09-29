@@ -1,0 +1,2 @@
+Iteración 2 (Seed: 62200820) - Greedy: 46109102,426954
+Tiempo de ejecución: 867 milisegundos

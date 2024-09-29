@@ -12,7 +12,8 @@ public class Main
     public static void main(String[] args)
     {
         // Archivos de problemas .tsp
-        String[] archivosTSP = {
+        String[] archivosTSP =
+        {
                 "a280.tsp",
                 "pr144.tsp",
                 "ch130.tsp",
@@ -31,6 +32,11 @@ public class Main
         int nIteraciones = 5;
         int k = 5;
 
+        //Configuracion Busqueda local
+        int num_iteraciones = 5000;
+        double tam_entorno = 0.08;
+        double dism_entorno = 0.1;
+
         // Bucle para cada archivo .tsp
         for (int i = 0; i < archivosTSP.length; i++)
         {
@@ -41,8 +47,9 @@ public class Main
             LectorTSP lector = new LectorTSP(rutaArchivo);
             double[][] distancias = lector.getDistancias();
 
-            // Instancia del algoritmo Greedy
+            // Instancia de los algoritmos
             Greedy greedy = new Greedy();
+            BusquedaLocal bLocal = new BusquedaLocal(num_iteraciones, tam_entorno, dism_entorno, lector);
 
             // Bucle para las iteraciones con diferentes semillas
             String currentSeed = seed;
@@ -57,17 +64,16 @@ public class Main
                 // Convertir la cadena de DNI a número
                 long dniNumerico = Long.parseLong(currentSeed);
 
-                // Ejecutar el algoritmo Greedy con el nuevo DNI desplazado
-                int[] distancia = greedy.RealizarGreedy(k, dniNumerico, lector);
+                // Ejecutar el algoritmo de Busqueda Local
+                bLocal.ejecutarBusquedaLocal(greedy.RealizarGreedy(k, dniNumerico, lector), new Random(dniNumerico));
 
                 // Nombre del archivo de log basado en el archivo .tsp y la semilla ( creacion del txt incluida )
                 String rutaLog = rutaLogs + "log_" + archivoTSP.replace(".tsp", "") + "_" + currentSeed + ".txt";
                 CreaLogs log = new CreaLogs(rutaLog);
 
                 // Generar mensaje de log y consola
-                String mensaje = String.format("Iteración %d (Seed: %s) - Greedy: %f", iteracion + 1, currentSeed, greedy.getMejor_coste());
+                String mensaje = String.format("Iteración %d (Seed: %s) - Busqueda Local: %f", iteracion + 1, currentSeed, bLocal.getMejorCoste());
                 logAndPrint(log, mensaje);
-                //busqueda_local_test(5000,8,10,10,lector,dniNumerico,distancia);
 
                 // Tiempo de finalización de la iteración
                 long endTime = System.currentTimeMillis();
@@ -89,14 +95,6 @@ public class Main
      */
     public static void logAndPrint(CreaLogs log, String mensaje) {
         System.out.println(mensaje); // Mostrar en consola
-        //log.escribirLog(mensaje);    // Escribir en el archivo de log
-    }
-
-    public static void busqueda_local_test(int numIteraciones, int tamEntornoInicial, double porcientoASubir, double   ratioDeSubida, LectorTSP lector, long seed , int[] distancia ){
-        Random random = new Random(seed);
-        BusquedaLocal busquedaLocal = new BusquedaLocal(numIteraciones, tamEntornoInicial, porcientoASubir, ratioDeSubida, lector, random);
-        double mejorCosteFinal = busquedaLocal.realizar_busqueda(distancia);
-        System.out.println("Mejor coste encontrado después de la Búsqueda Local: " + mejorCosteFinal);
-
+        log.escribirLog(mensaje);    // Escribir en el archivo de log
     }
 }

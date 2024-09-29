@@ -1,0 +1,2 @@
+Iteración 5 (Seed: 00820622) - Greedy: 5619632,480214
+Tiempo de ejecución: 0 milisegundos
