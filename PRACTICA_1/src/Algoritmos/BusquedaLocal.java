@@ -1,63 +1,64 @@
 package Algoritmos;
 
 import procesadoFicheros.LectorTSP;
-import java.util.ArrayList;
+
 import java.util.Random;
 
 public class BusquedaLocal
 {
-    private class Vecino {
-        private int[] vector_sol;
-        private double coste_total;
+    private class Vecino
+    {
+        private int[] vectorSol;
+        private double costeTotal;
 
         public Vecino(int[] solucion)
         {
-            this.vector_sol = solucion;
-            calcular_coste_total();
+            this.vectorSol = solucion;
+            CalcularCosteTotal();
         }
 
-        public void calcular_coste_total()
+        public void CalcularCosteTotal()
         {
             double posible_nuevo_coste = 0;
 
-            for (int i = 0; i < vector_sol.length; i++)
+            for (int i = 0; i < vectorSol.length; i++)
             {
                 if (i != 0)
                 {
-                    posible_nuevo_coste += lector.getDistancias()[vector_sol[i]][vector_sol[i - 1]];
+                    posible_nuevo_coste += lector.getDistancias()[vectorSol[i]][vectorSol[i - 1]];
                 }
                 else
                 {
-                    posible_nuevo_coste += lector.getDistancias()[vector_sol[i]][vector_sol[vector_sol.length - 1]];
+                    posible_nuevo_coste += lector.getDistancias()[vectorSol[i]][vectorSol[vectorSol.length - 1]];
                 }
             }
 
-            coste_total = posible_nuevo_coste;
+            costeTotal = posible_nuevo_coste;
         }
 
-        public double get_coste_total()
+        public double GetCosteTotal()
         {
-            return coste_total;
+            return costeTotal;
         }
 
         public int[] get_vector_sol()
         {
-            return vector_sol;
+            return vectorSol;
         }
     }
 
-    private int num_iteraciones;
-    private double tam_entorno;
-    private double dism_entorno;
+    private int numIteraciones;
+    private double tamEntorno;
+    private double dismEntorno;
     private LectorTSP lector;
     private Random random;
     private double costeMejorSolucion;
 
     public BusquedaLocal(int n, double t, double d, LectorTSP l)
     {
-        num_iteraciones = n;
-        tam_entorno = t;
-        dism_entorno = d;
+        numIteraciones = n;
+        tamEntorno = t;
+        dismEntorno = d;
         lector = l;
         costeMejorSolucion = Double.MAX_VALUE;
     }
@@ -69,18 +70,16 @@ public class BusquedaLocal
         //Declaración de variables que emplearemos en el algoritmo
         int[] s = s_inicial.clone(); // Clonar la solución inicial para no modificar el original
         Vecino mejorVecino = new Vecino(s);
-        double costeMejorSolucion = mejorVecino.get_coste_total();
+        double costeMejorSolucion = mejorVecino.GetCosteTotal();
         double costeMejorVecino;
         int i = 0;
-        boolean mejora = true;
 
-        int tamVecindario = (int) (num_iteraciones * tam_entorno); //Tamaño inicial del vecindario
-        int cambio = (int) (num_iteraciones * dism_entorno); //Cada % de iteraciones
+        int tamVecindario = (int) (numIteraciones * (1 - tamEntorno)); //Tamaño inicial del vecindario
+        int cambio = (int) (numIteraciones * dismEntorno); //Cada % de iteraciones
 
-        while (i < num_iteraciones && mejora)
+        while (i < numIteraciones)
         {
             costeMejorVecino = Double.MAX_VALUE;
-            mejora = false;
             Vecino mejorVecinoActual = null;
 
             //Explora el vecinadario
@@ -100,7 +99,7 @@ public class BusquedaLocal
 
                 //Se crea un nuevo vecino y se calcula su coste
                 Vecino vecino = new Vecino(nuevaSol);
-                double coste = vecino.get_coste_total();
+                double coste = vecino.GetCosteTotal();
 
                 //Se Actualiza el mejor vecino encontrado en este vecindario si es necesario
                 if (coste < costeMejorVecino)
@@ -116,17 +115,15 @@ public class BusquedaLocal
                 s = mejorVecinoActual.get_vector_sol();
                 costeMejorSolucion = costeMejorVecino;
                 mejorVecino = mejorVecinoActual;
-
-                mejora = true;
-                i++;
             }
 
             //Se reduce el tamaño del vecindario cada "cambio" iteraciones
             if ((i > 0) && (i % cambio == 0))
             {
-                tamVecindario = (int) (tamVecindario * (1 - dism_entorno));
-                tamVecindario = Math.max(tamVecindario, 1);
+                tamVecindario = (int) (tamVecindario * (1 - tamEntorno));
             }
+
+            i++;
         }
     }
 
