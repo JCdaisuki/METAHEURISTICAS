@@ -116,7 +116,6 @@ public class BusquedaLocal
             {
                 s = mejorVecinoActual.get_vector_sol();
                 costeMejorSolucion = costeMejorVecino;
-                System.out.println(costeMejorSolucion);
 
                 i++;
                 mejora = true;
