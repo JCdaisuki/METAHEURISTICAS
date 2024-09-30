@@ -15,9 +15,9 @@ public class Main
         String[] archivosTSP =
         {
                 "a280.tsp",
-                "pr144.tsp",
                 "ch130.tsp",
                 "d18512.tsp",
+                "pr144.tsp",
                 "u1060.tsp"
         };
 
