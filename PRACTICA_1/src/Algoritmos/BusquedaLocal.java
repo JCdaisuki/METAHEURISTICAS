@@ -60,7 +60,6 @@ public class BusquedaLocal
         tamEntorno = t;
         dismEntorno = d;
         lector = l;
-        costeMejorSolucion = Double.MAX_VALUE;
     }
 
     public void ejecutarBusquedaLocal(int[] s_inicial, Random r)
@@ -70,17 +69,20 @@ public class BusquedaLocal
         //Declaración de variables que emplearemos en el algoritmo
         int[] s = s_inicial.clone(); // Clonar la solución inicial para no modificar el original
         Vecino mejorVecino = new Vecino(s);
-        double costeMejorSolucion = mejorVecino.GetCosteTotal();
+        costeMejorSolucion = mejorVecino.GetCosteTotal();
         double costeMejorVecino;
+
         int i = 0;
+        boolean mejora = true;
 
         int tamVecindario = (int) (numIteraciones * (1 - tamEntorno)); //Tamaño inicial del vecindario
         int cambio = (int) (numIteraciones * dismEntorno); //Cada % de iteraciones
 
-        while (i < numIteraciones)
+        while (i < numIteraciones && mejora)
         {
             costeMejorVecino = Double.MAX_VALUE;
             Vecino mejorVecinoActual = null;
+            mejora = false;
 
             //Explora el vecinadario
             for (int j = 0; j < tamVecindario; j++)
@@ -114,7 +116,10 @@ public class BusquedaLocal
             {
                 s = mejorVecinoActual.get_vector_sol();
                 costeMejorSolucion = costeMejorVecino;
-                mejorVecino = mejorVecinoActual;
+                System.out.println(costeMejorSolucion);
+
+                i++;
+                mejora = true;
             }
 
             //Se reduce el tamaño del vecindario cada "cambio" iteraciones
@@ -122,8 +127,6 @@ public class BusquedaLocal
             {
                 tamVecindario = (int) (tamVecindario * (1 - tamEntorno));
             }
-
-            i++;
         }
     }
 
