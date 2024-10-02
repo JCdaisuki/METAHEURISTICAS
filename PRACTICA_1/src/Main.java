@@ -22,7 +22,7 @@ public class Main
         };
 
         // Ruta base para los archivos .tsp
-        String rutaBase = "..\\METAHEURISTICAS\\PRACTICA_1\\";
+        String rutaBase = "..\\PRACTICA_1\\";
 
         // Ruta para la carpeta de logs
         String rutaLogs = rutaBase + "log\\";
@@ -72,7 +72,7 @@ public class Main
                 CreaLogs log = new CreaLogs(rutaLog);
 
                 // Generar mensaje de log y consola
-                String mensaje = String.format("Iteración %d (Seed: %s) - Busqueda Local: %f", iteracion + 1, currentSeed, bLocal.getMejorCoste());
+                String mensaje = String.format("Iteración %d de %s(Seed: %s) - Busqueda Local: %f", iteracion + 1, archivosTSP[i], currentSeed, bLocal.getMejorCoste());
                 logAndPrint(log, mensaje);
 
                 // Tiempo de finalización de la iteración

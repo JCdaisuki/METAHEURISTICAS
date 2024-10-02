@@ -1,2 +1,10 @@
 Iteración 4 (Seed: 20082062) - Busqueda Local: 12979,992092
 Tiempo de ejecución: 161 milisegundos
+Iteración 4 (Seed: 20082062) - Busqueda Local: 12979,992092
+Tiempo de ejecución: 93 milisegundos
+Iteración 4 (Seed: 20082062) - Busqueda Local: 12979,992092
+Tiempo de ejecución: 91 milisegundos
+Iteración 4 de [Ljava.lang.String;@27fa135a(Seed: 20082062) - Busqueda Local: 12979,992092
+Tiempo de ejecución: 94 milisegundos
+Iteración 4 de ch130.tsp(Seed: 20082062) - Busqueda Local: 12979,992092
+Tiempo de ejecución: 103 milisegundos

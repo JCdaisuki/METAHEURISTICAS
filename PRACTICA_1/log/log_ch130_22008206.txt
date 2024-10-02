@@ -1,2 +1,10 @@
 Iteración 3 (Seed: 22008206) - Busqueda Local: 11467,109272
 Tiempo de ejecución: 169 milisegundos
+Iteración 3 (Seed: 22008206) - Busqueda Local: 11467,109272
+Tiempo de ejecución: 128 milisegundos
+Iteración 3 (Seed: 22008206) - Busqueda Local: 11467,109272
+Tiempo de ejecución: 183 milisegundos
+Iteración 3 de [Ljava.lang.String;@27fa135a(Seed: 22008206) - Busqueda Local: 11467,109272
+Tiempo de ejecución: 162 milisegundos
+Iteración 3 de ch130.tsp(Seed: 22008206) - Busqueda Local: 11467,109272
+Tiempo de ejecución: 171 milisegundos

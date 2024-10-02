@@ -1,2 +1,10 @@
 Iteración 2 (Seed: 62200820) - Busqueda Local: 12016,948754
 Tiempo de ejecución: 113 milisegundos
+Iteración 2 (Seed: 62200820) - Busqueda Local: 12016,948754
+Tiempo de ejecución: 112 milisegundos
+Iteración 2 (Seed: 62200820) - Busqueda Local: 12016,948754
+Tiempo de ejecución: 115 milisegundos
+Iteración 2 de [Ljava.lang.String;@27fa135a(Seed: 62200820) - Busqueda Local: 12016,948754
+Tiempo de ejecución: 92 milisegundos
+Iteración 2 de ch130.tsp(Seed: 62200820) - Busqueda Local: 12016,948754
+Tiempo de ejecución: 131 milisegundos

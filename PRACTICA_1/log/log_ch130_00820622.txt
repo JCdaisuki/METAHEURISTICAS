@@ -1,2 +1,10 @@
 Iteración 5 (Seed: 00820622) - Busqueda Local: 11080,178056
 Tiempo de ejecución: 151 milisegundos
+Iteración 5 (Seed: 00820622) - Busqueda Local: 11080,178056
+Tiempo de ejecución: 101 milisegundos
+Iteración 5 (Seed: 00820622) - Busqueda Local: 11080,178056
+Tiempo de ejecución: 102 milisegundos
+Iteración 5 de [Ljava.lang.String;@27fa135a(Seed: 00820622) - Busqueda Local: 11080,178056
+Tiempo de ejecución: 136 milisegundos
+Iteración 5 de ch130.tsp(Seed: 00820622) - Busqueda Local: 11080,178056
+Tiempo de ejecución: 115 milisegundos
