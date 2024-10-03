@@ -48,13 +48,14 @@ public class Main
             double[][] distancias = lector.getDistancias();
 
             // Instancia de los algoritmos
-            Greedy greedy = new Greedy();
-            BusquedaLocal bLocal = new BusquedaLocal(num_iteraciones, tam_entorno, dism_entorno, lector);
 
             // Bucle para las iteraciones con diferentes semillas
             String currentSeed = seed;
             for (int iteracion = 0; iteracion < nIteraciones; iteracion++)
             {
+                Greedy greedy = new Greedy();
+                BusquedaLocal bLocal = new BusquedaLocal(num_iteraciones, tam_entorno, dism_entorno, lector);
+
                 // Tiempo de inicio de la iteración
                 long startTime = System.currentTimeMillis();
 
@@ -72,7 +73,7 @@ public class Main
                 CreaLogs log = new CreaLogs(rutaLog);
 
                 // Generar mensaje de log y consola
-                String mensaje = String.format("Iteración %d de %s(Seed: %s) - Busqueda Local: %f", iteracion + 1, archivosTSP[i], currentSeed, bLocal.getMejorCoste());
+                String mensaje = String.format("Ejecucion %d de %s(Seed: %s) - Busqueda Local: %f", iteracion + 1, archivosTSP[i], currentSeed, bLocal.getMejorCoste());
                 logAndPrint(log, mensaje);
 
                 // Tiempo de finalización de la iteración
