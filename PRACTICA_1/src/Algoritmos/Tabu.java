@@ -53,9 +53,10 @@ public class Tabu {
     private Vecino mejorVecino;
     private long semilla;
     private int k;
+    private int sinMejora;
 
 
-
+    //constructor tabu
     public Tabu(LectorTSP Lector, int Maxiteraciones, double EmpeoramientoPermitido,Random r, int K,long Semilla){
         this.lector = Lector;
         this.numIteraciones = Maxiteraciones;
@@ -65,30 +66,42 @@ public class Tabu {
         this.random = r;
     }
 
+
     public double ejecutarTabu(int[] inicialS){
          mejorVecino = new Vecino(inicialS);
         Vecino solAct = new Vecino(inicialS);
-        int sinMejora = 0;  // contador para soluciones sin mejora
-        for(int i = 0; i < numIteraciones; i++){
+        sinMejora = 0;  // contador para soluciones sin mejora
+        int ite=0;
+        while(numIteraciones>ite){
             if(sinMejora>=numIteraciones*empeoramientoPermitido){
                 Greedy greedy = new Greedy(); //preparamos el greedy para ser realizado de nuevo
                 solAct.setVectorSol(greedy.RealizarGreedy(k,semilla,lector)); // se lanza el greedy para intentar encontrar mejor sol por empeoramiento
                 sinMejora = 0;
+                hayMejora(solAct);
+
             }else{
                 //TODO busqueda de tabu
 
-                if(solAct.getCosteTotal() < mejorSolucion){
-                    sinMejora=0;
-                    mejorVecino=solAct;
-                    mejorSolucion = mejorVecino.getCosteTotal();
-                }else{
-                    sinMejora++;
-                }
+                hayMejora(solAct);
             }
 
-
+            ite++;
         }
         return mejorSolucion;
     }
 
+
+
+    //funcion que se encarga de revisar si hay mejora o no en la ejecucion, en caso de no haber solucion aumenta el contador de empeoramiento
+    private void hayMejora(Vecino solAct) {
+        if(solAct.getCosteTotal() < mejorSolucion){
+            sinMejora=0;
+            mejorVecino=solAct;
+            mejorSolucion = mejorVecino.getCosteTotal();
+        }else{
+            sinMejora++;
+        }
+    }
 }
+
+
