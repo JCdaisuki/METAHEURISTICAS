@@ -1,5 +1,7 @@
 package Algoritmos;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import procesadoFicheros.LectorTSP;
 
@@ -129,7 +131,6 @@ public class Tabu {
         // Generar dos índices aleatorios para intercambiar usando el Random con semilla
         int p1 = random.nextInt(nuevaSolucion.length);
         int p2;
-
         do {
             p2 = random.nextInt(nuevaSolucion.length);
         } while (p1 == p2);
@@ -144,11 +145,12 @@ public class Tabu {
     }
     private boolean esTabu(Vecino solucion) {
         for (Vecino solTabu : listaTabu) {
-            if (solucion == solTabu) {   //TODO revisar si hay que sobrecargar el operador == de los Vecinos
-                return true;  // La solución está en la lista tabú
+
+            if (Arrays.equals(solucion.get_vector_sol(), solTabu.get_vector_sol())) {
+                return true;  // La solucion está en la lista tabú
             }
         }
-        return false;  // La solución no está en la lista tabú
+        return false;  // La solucion no está en la lista tabú
     }
     private void actualizarTabu() {
 
