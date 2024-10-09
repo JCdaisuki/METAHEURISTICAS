@@ -4,7 +4,7 @@ import procesadoFicheros.LectorTSP;
 
 import java.util.Random;
 
-public class BusquedaLocal
+public class AlgBusquedaLocal_Clase03_Grupo04
 {
     private class Vecino
     {
@@ -54,7 +54,7 @@ public class BusquedaLocal
     private Random random;
     private double costeMejorSolucion;
 
-    public BusquedaLocal(int n, double t, double d, LectorTSP l)
+    public AlgBusquedaLocal_Clase03_Grupo04(int n, double t, double d, LectorTSP l)
     {
         numIteraciones = n;
         tamEntorno = t;

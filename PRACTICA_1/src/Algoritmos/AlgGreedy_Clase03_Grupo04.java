@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Greedy
+public class AlgGreedy_Clase03_Grupo04
 {
     // Clase auxiliar para el ordenamiento del vector
     private class CiudadInfo {
@@ -31,7 +31,7 @@ public class Greedy
         return mejorCoste;
     }
 
-    public Greedy() {}
+    public AlgGreedy_Clase03_Grupo04() {}
 
     // Función que realiza el algoritmo Greedy Aleatorio
     public int[] RealizarGreedy(int k, long seed, LectorTSP lector)
