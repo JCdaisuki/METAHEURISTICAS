@@ -34,7 +34,7 @@ public class AlgGreedy_Clase03_Grupo04
 
         // Se añade la primera ciudad
         int tam_ordenado = ordenado.size();
-        int indice = ordenado.get(ciudad).indice;
+        int indice = ordenado.get(ciudad).getIndice();
         int indice_ini = indice;
         int indice_ant = indice;
         solucion.add(indice); // Cambiamos a añadir el índice en lugar de CiudadInfo
