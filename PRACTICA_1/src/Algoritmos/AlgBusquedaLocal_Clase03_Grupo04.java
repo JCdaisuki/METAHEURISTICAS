@@ -1,52 +1,12 @@
 package Algoritmos;
 
-import procesadoFicheros.LectorTSP;
+import ProcesadoFicheros.LectorTSP;
+import Auxiliares.Vecino;
 
 import java.util.Random;
 
 public class AlgBusquedaLocal_Clase03_Grupo04
 {
-    private class Vecino
-    {
-        private int[] vectorSol;
-        private double costeTotal;
-
-        public Vecino(int[] solucion)
-        {
-            this.vectorSol = solucion;
-            CalcularCosteTotal();
-        }
-
-        public void CalcularCosteTotal()
-        {
-            double posible_nuevo_coste = 0;
-
-            for (int i = 0; i < vectorSol.length; i++)
-            {
-                if (i != 0)
-                {
-                    posible_nuevo_coste += lector.getDistancias()[vectorSol[i]][vectorSol[i - 1]];
-                }
-                else
-                {
-                    posible_nuevo_coste += lector.getDistancias()[vectorSol[i]][vectorSol[vectorSol.length - 1]];
-                }
-            }
-
-            costeTotal = posible_nuevo_coste;
-        }
-
-        public double GetCosteTotal()
-        {
-            return costeTotal;
-        }
-
-        public int[] get_vector_sol()
-        {
-            return vectorSol;
-        }
-    }
-
     private int numIteraciones;
     private double tamEntorno;
     private double dismEntorno;
@@ -68,7 +28,7 @@ public class AlgBusquedaLocal_Clase03_Grupo04
 
         //Declaración de variables que emplearemos en el algoritmo
         int[] s = s_inicial.clone(); // Clonar la solución inicial para no modificar el original
-        Vecino mejorVecino = new Vecino(s);
+        Vecino mejorVecino = new Vecino(s, lector);
         costeMejorSolucion = mejorVecino.GetCosteTotal();
         double costeMejorVecino;
 
@@ -100,7 +60,7 @@ public class AlgBusquedaLocal_Clase03_Grupo04
                 int[] nuevaSol = operador_dos_opt(s, p1, p2);
 
                 //Se crea un nuevo vecino y se calcula su coste
-                Vecino vecino = new Vecino(nuevaSol);
+                Vecino vecino = new Vecino(nuevaSol, lector);
                 double coste = vecino.GetCosteTotal();
 
                 //Se Actualiza el mejor vecino encontrado en este vecindario si es necesario

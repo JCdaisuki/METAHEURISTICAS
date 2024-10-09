@@ -1,29 +1,12 @@
 package Algoritmos;
-import procesadoFicheros.LectorTSP;
+import Auxiliares.CiudadInfo;
+import ProcesadoFicheros.LectorTSP;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class AlgGreedy_Clase03_Grupo04
 {
-    // Clase auxiliar para el ordenamiento del vector
-    private class CiudadInfo {
-        private int indice;
-        private double distTotal; // Distancia total de la ciudad al resto de ciudades
-
-        CiudadInfo(int i, double d) {
-            indice = i;
-            distTotal = d;
-        }
-
-        public double GetDistTotal() {
-            return distTotal;
-        }
-        public int getIndice() {
-            return indice;
-        }
-    }
-
     private double mejorCoste;
 
     public double GetMejorCoste()

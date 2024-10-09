@@ -1,11 +1,8 @@
-import procesadoFicheros.LectorTSP;
-import procesadoFicheros.CreaLogs;
+import ProcesadoFicheros.LectorTSP;
+import ProcesadoFicheros.CreaLogs;
 import Algoritmos.AlgGreedy_Clase03_Grupo04;
 import Algoritmos.AlgBusquedaLocal_Clase03_Grupo04;
 import java.util.Random;
-
-
-import java.lang.reflect.Array;
 
 public class Main
 {

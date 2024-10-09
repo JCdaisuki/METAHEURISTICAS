@@ -1,7 +1,7 @@
 package Algoritmos;
 import java.util.ArrayList;
 import java.util.Random;
-import procesadoFicheros.LectorTSP;
+import ProcesadoFicheros.LectorTSP;
 
 public class AlgTabu_Clase03_Grupo04 {
 
