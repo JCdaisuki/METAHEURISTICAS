@@ -1,7 +1,7 @@
-import procesadoFicheros.CreaLogs;
-import Algoritmos.Greedy;
 import procesadoFicheros.LectorTSP;
-import Algoritmos.BusquedaLocal;
+import procesadoFicheros.CreaLogs;
+import Algoritmos.AlgGreedy_Clase03_Grupo04;
+import Algoritmos.AlgBusquedaLocal_Clase03_Grupo04;
 import java.util.Random;
 
 
@@ -48,8 +48,8 @@ public class Main
             double[][] distancias = lector.getDistancias();
 
             // Instancia de los algoritmos
-            Greedy greedy = new Greedy();
-            BusquedaLocal bLocal = new BusquedaLocal(num_iteraciones, tam_entorno, dism_entorno, lector);
+            AlgGreedy_Clase03_Grupo04 greedy = new AlgGreedy_Clase03_Grupo04();
+            AlgBusquedaLocal_Clase03_Grupo04 bLocal = new AlgBusquedaLocal_Clase03_Grupo04(num_iteraciones, tam_entorno, dism_entorno, lector);
 
             // Bucle para las iteraciones con diferentes semillas
             String currentSeed = seed;
