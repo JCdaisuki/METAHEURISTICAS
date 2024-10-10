@@ -52,11 +52,12 @@ public class Main
             String currentSeed = seed;
             for (int iteracion = 0; iteracion < nIteraciones; iteracion++)
             {
+                // Desplazar el primer dígito al final
+                currentSeed = currentSeed.substring(1) + currentSeed.charAt(0);
+
                 // Tiempo de inicio de la iteración
                 long startTime = System.currentTimeMillis();
 
-                // Desplazar el primer dígito al final
-                currentSeed = currentSeed.substring(1) + currentSeed.charAt(0);
 
                 // Convertir la cadena de DNI a número
                 long dniNumerico = Long.parseLong(currentSeed);
@@ -69,7 +70,7 @@ public class Main
                 CreaLogs log = new CreaLogs(rutaLog);
 
                 // Generar mensaje de log y consola
-                String mensaje = String.format("Iteración %d de %s(Seed: %s) - Busqueda Local: %f", iteracion + 1, archivosTSP[i], currentSeed, bLocal.getMejorCoste());
+                String mensaje = String.format("Ejecucion %d de %s(Seed: %s) - Busqueda Local: %f", iteracion + 1, archivosTSP[i], currentSeed, bLocal.getMejorCoste());
                 logAndPrint(log, mensaje);
 
                 // Tiempo de finalización de la iteración
@@ -81,7 +82,8 @@ public class Main
 
                 // Cerrar el archivo de log para esta iteración
                 log.cerrarLog();
-            }
+
+                 }
         }
     }
 
