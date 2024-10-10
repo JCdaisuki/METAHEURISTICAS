@@ -5,7 +5,9 @@ import Algoritmos.AlgBusquedaLocal_Clase03_Grupo04;
 import java.util.Random;
 
 public class Main
-{
+{                               //TODO HACER LOGS QUE MUESTREN MEJORES LOCALES EN LOS LOGS DE LA TABU
+                                //TODO HACER QUE EN LOS LOGS DE LA BUSQUEDA LOCAL MUESTRE EL RECORRIDO LOCAL
+
     public static void main(String[] args)
     {
         // Archivos de problemas .tsp
