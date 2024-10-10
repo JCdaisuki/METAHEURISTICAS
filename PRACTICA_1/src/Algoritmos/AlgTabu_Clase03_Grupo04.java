@@ -3,9 +3,9 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import procesadoFicheros.LectorTSP;
+import ProcesadoFicheros.LectorTSP;
 
-public class Tabu {
+public class AlgTabu_Clase03_Grupo04 {
 
     private class Vecino
     {
@@ -62,7 +62,7 @@ public class Tabu {
 
 
     //constructor tabu
-    public Tabu(LectorTSP Lector, int Maxiteraciones, double EmpeoramientoPermitido,Random r, int K,long Semilla){
+    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double EmpeoramientoPermitido, Random r, int K, long Semilla){
         this.lector = Lector;
         this.numIteraciones = Maxiteraciones;
         this.empeoramientoPermitido = EmpeoramientoPermitido;
@@ -78,10 +78,8 @@ public class Tabu {
         sinMejora = 0;  // contador para soluciones sin mejora
         int ite=0;
         while(numIteraciones>ite){
-
-
             if(sinMejora>=numIteraciones*empeoramientoPermitido){
-                Greedy greedy = new Greedy(); //preparamos el greedy para ser realizado de nuevo
+                AlgGreedy_Clase03_Grupo04 greedy = new AlgGreedy_Clase03_Grupo04(); //preparamos el greedy para ser realizado de nuevo
                 solAct.setVectorSol(greedy.RealizarGreedy(k,semilla,lector)); // se lanza el greedy para intentar encontrar mejor sol por empeoramiento
                 sinMejora = 0;
                 hayMejora(solAct);
@@ -96,8 +94,6 @@ public class Tabu {
         }
         return mejorSolucion;
     }
-
-
 
     //funcion que se encarga de revisar si hay mejora o no en la ejecucion, en caso de no haber solucion aumenta el contador de empeoramiento
     private void hayMejora(Vecino solAct) {
@@ -125,6 +121,7 @@ public class Tabu {
 
         return mejorVecinoLocal;  // Retorna el mejor vecino encontrado o el mejor anterior en caso de no encontrar mejor
     }
+
     private Vecino generarVecino(Vecino solAct) {
         int[] nuevaSolucion = solAct.get_vector_sol().clone();
 
@@ -143,6 +140,7 @@ public class Tabu {
         // Crear un nuevo Vecino a partir de la solución modificada
         return new Vecino(nuevaSolucion);
     }
+
     private boolean esTabu(Vecino solucion) {
         for (Vecino solTabu : listaTabu) {
 

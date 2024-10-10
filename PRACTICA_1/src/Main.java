@@ -1,11 +1,8 @@
-import procesadoFicheros.CreaLogs;
-import Algoritmos.Greedy;
-import procesadoFicheros.LectorTSP;
-import Algoritmos.BusquedaLocal;
+import ProcesadoFicheros.LectorTSP;
+import ProcesadoFicheros.CreaLogs;
+import Algoritmos.AlgGreedy_Clase03_Grupo04;
+import Algoritmos.AlgBusquedaLocal_Clase03_Grupo04;
 import java.util.Random;
-
-
-import java.lang.reflect.Array;
 
 public class Main
 {
@@ -48,14 +45,13 @@ public class Main
             double[][] distancias = lector.getDistancias();
 
             // Instancia de los algoritmos
+            AlgGreedy_Clase03_Grupo04 greedy = new AlgGreedy_Clase03_Grupo04();
+            AlgBusquedaLocal_Clase03_Grupo04 bLocal = new AlgBusquedaLocal_Clase03_Grupo04(num_iteraciones, tam_entorno, dism_entorno, lector);
 
             // Bucle para las iteraciones con diferentes semillas
             String currentSeed = seed;
             for (int iteracion = 0; iteracion < nIteraciones; iteracion++)
             {
-                Greedy greedy = new Greedy();
-                BusquedaLocal bLocal = new BusquedaLocal(num_iteraciones, tam_entorno, dism_entorno, lector);
-
                 // Tiempo de inicio de la iteración
                 long startTime = System.currentTimeMillis();
 
@@ -73,7 +69,7 @@ public class Main
                 CreaLogs log = new CreaLogs(rutaLog);
 
                 // Generar mensaje de log y consola
-                String mensaje = String.format("Ejecucion %d de %s(Seed: %s) - Busqueda Local: %f", iteracion + 1, archivosTSP[i], currentSeed, bLocal.getMejorCoste());
+                String mensaje = String.format("Iteración %d de %s(Seed: %s) - Busqueda Local: %f", iteracion + 1, archivosTSP[i], currentSeed, bLocal.getMejorCoste());
                 logAndPrint(log, mensaje);
 
                 // Tiempo de finalización de la iteración

@@ -1,4 +1,4 @@
-package procesadoFicheros;
+package ProcesadoFicheros;
 
 import java.io.FileWriter;
 import java.io.IOException;
