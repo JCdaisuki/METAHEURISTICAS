@@ -49,12 +49,12 @@ public class AlgTabu_Clase03_Grupo04 {
     private LectorTSP lector;
     private Random random;
     private int numIteraciones;
-    private int empeoramientoPermitido;
+    private double empeoramientoPermitido;
     private double mejorSolucion;
+    double sinMejora ;// contador para soluciones sin mejora
     private Vecino mejorGlobal;
     private long semilla;
     private int k;
-    private int sinMejora;
     private int tamVecindario;
     private ArrayList<Vecino> listaTabu = new ArrayList<Vecino>();
     private int maxTamanoTabu;
@@ -62,7 +62,7 @@ public class AlgTabu_Clase03_Grupo04 {
 
 
     //constructor tabu
-    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, int EmpeoramientoPermitido, Random r, int K, long Semilla){
+    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double EmpeoramientoPermitido, Random r, int K, long Semilla){
         this.lector = Lector;
         this.numIteraciones = Maxiteraciones;
         this.empeoramientoPermitido = EmpeoramientoPermitido;
@@ -72,90 +72,141 @@ public class AlgTabu_Clase03_Grupo04 {
         this.memoria = new int[lector.getCiudades().length][lector.getCiudades().length];
     }
 
-
-    public double ejecutarTabu(int[] inicialS){
-         mejorGlobal = new Vecino(inicialS);
-        Vecino solAct = new Vecino(inicialS);
-        Vecino mejorLocal = new Vecino(inicialS);
-        sinMejora = 0;  // contador para soluciones sin mejora
+    /**
+     * @Brief Ejecutor del Tabu
+     * @param vInicial
+     * @return costeMejorSolucion ( double )
+     */
+    public double ejecutarTabu(int[] vInicial){
+         mejorGlobal = new Vecino(vInicial);
+        Vecino solAct = new Vecino(vInicial);
+        Vecino mejorLocal = new Vecino(vInicial);
+        sinMejora = 0 ; //inicializo contador de no mejoras
         int ite=0;
 
         while(numIteraciones>ite){
             if(sinMejora>=numIteraciones*empeoramientoPermitido){
-                AlgGreedy_Clase03_Grupo04 greedy = new AlgGreedy_Clase03_Grupo04(); //preparamos el greedy para ser realizado de nuevo
-                solAct.setVectorSol(greedy.RealizarGreedy(k,semilla,lector)); // se lanza el greedy para intentar encontrar mejor sol por empeoramiento
-                hayMejora(mejorLocal, mejorGlobal);
-                mejorSolucion = mejorGlobal.getCosteTotal();
-            }else{
-                //TODO tabu
+                solAct = generarEquilibrado();
+                mejorLocal = solAct;
+                hayMejora(solAct, mejorGlobal);
 
+            }else{
+                solAct = generarVecino(solAct);
                 hayMejora(solAct,mejorLocal);
+                if(solAct == mejorLocal){  //si el local es el mismo que el mejor local significa que hay cambios
+                                            // y hay que comprobar si estamos ante un proximo mejor global
+                    hayMejora(mejorLocal,mejorGlobal);
+                }
             }
 
             ite++;
         }
+        mejorSolucion = mejorGlobal.getCosteTotal();
         return mejorSolucion;
     }
 
-    //funcion que va a tener dos usos, el primero es que si la busqueda en la zona local no encuentra mejoras para ver si es ya mejorLocal mejor que Gobal
-    //lo segundo es que tambien se usa para ver que tan bien esta yendo la busqueda dentro de la zona local
-
+    /**
+     * @Brief Comprobacion de mejora en la busqueda local
+     * @param solAct
+     * @param mejor
+     */
     private void hayMejora(Vecino solAct, Vecino mejor) {
         if(solAct.getCosteTotal() < mejor.costeTotal){
             mejor = solAct;
+            updateMemoriaLargo(mejor);
         }else{
             sinMejora++;
         }
     }
 
-
+    /**
+     * @Brief funcion que genera el vecino cambiando dos posiciones del vector entre si
+     * //hay comprobaciones previas como revisar si esta en la lista a corto plazo o tambien revisar que no sean la misma posicion
+     * @param solAct
+     * @return
+     */
     private Vecino generarVecino(Vecino solAct) {
         int[] nuevaSolucion = solAct.get_vector_sol();
-
-        // Generar dos índices aleatorios para intercambiar usando el Random con semilla
-        int p1 = random.nextInt(nuevaSolucion.length);
         int p2;
-        do {
-            p2 = random.nextInt(nuevaSolucion.length);
-        } while (p1 == p2);
+        int p1;
+
+        // Generar dos índices aleatorios para intercambiar usando el Random con semilla y revisando la memoria a corto
+            p1 = random.nextInt(nuevaSolucion.length);
+            do {
+                p2 = random.nextInt(nuevaSolucion.length);
+            } while (p1 == p2 || checkMemoriaCorto(p1,p2));
+
+
 
         // Intercambiar las ciudades en las posiciones p1 y p2
         int temp = nuevaSolucion[p1];
         nuevaSolucion[p1] = nuevaSolucion[p2];
         nuevaSolucion[p2] = temp;
 
+        //actualizamos memoria a corto plazo con p1 y p2
+        updateMemoriaCorto(p1,p2);
+
         // Crear un nuevo Vecino a partir de la solución modificada
         return new Vecino(nuevaSolucion);
     }
 
-
-
-
-    private void actualizarTabu() {
-
-    }
-
-    private void updateMemoria(int p1, int p2, Vecino mejorLocal){
-            //para acceder a la parte de memoria corto plazo, arriba derecha, el menor es la fila memoria[menor][mayor]
-            // para acceder a la parte de memoria largo plazo, abajo derecha, el mayor es la fila memoria[mayor][menor]
-
-
-            //TODO hay que separar esta funcion para que se realice en cada momento
-        // la memoria corto y largo plazo se actualiza cada vez que se hace un cambio mejore o no ademas de prevenir cambios futuros entre indices
-
-
-
+    /**
+     * @Brief Actualizacion de la memoria a Corto plazo
+     * @param dere
+     * @param izq
+     */
+    private void updateMemoriaCorto(int dere, int izq){
         //actualizacion corto plazo
 
         for(int i = 0; i < memoria.length ; i++ ){
             for(int j = i; j < memoria[i].length ; j++ ){
                 if( j != i){
-                    memoria[i][j] --;
+                    if(memoria[i][j] > 0){
+                        memoria[i][j] --;
+                    }
                 }
             }
         }
 
-        //update de la memoria a largo plazo apartir de la solucion LOCAL mejor
+        if(dere > izq ){
+            memoria[dere][izq] ++;
+        }else{
+            memoria[izq][dere] ++;
+        }
+
+    }
+
+    /**
+     * @Brief revision de la memoria a corto plazo para ver el uso del cambio propuesto por el aleatorio
+     *     //devuelve true en caso de estar en la memoria a corto plazo con mas de 1 "flag"
+     * @param p1
+     * @param p2
+     * @return
+     */
+    private boolean checkMemoriaCorto(int p1, int p2){
+        if(p1>p2){
+            if(memoria[p2][p1] > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            if(memoria[p1][p2] > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    /**
+     * @Brief Actualizacion de la Mermoria a largo plazo, sumando puntuacion en los arcos del vector incluyendo el ultimo con el primero
+     * @param mejorLocal
+     */
+    private void updateMemoriaLargo(Vecino mejorLocal){
+            //para acceder a la parte de memoria corto plazo, arriba derecha, el menor es la fila memoria[menor][mayor]
+            // para acceder a la parte de memoria largo plazo, abajo derecha, el mayor es la fila memoria[mayor][menor]
+            //update de la memoria a largo plazo apartir de la solucion LOCAL mejor
         for (int i = 0; i < mejorLocal.get_vector_sol().length; i++) {
             int izq = mejorLocal.get_vector_sol()[i];
             int dere;
@@ -173,29 +224,96 @@ public class AlgTabu_Clase03_Grupo04 {
         }
     }
 
-    /**
-     * @Brief Funcion auxiliar para comprobar si el cambio es tabu en la memoria a corto plazo
-     * @param p1
-     * @param p2
-     * @return
-     */
-    private boolean cambioTabu(int p1 , int p2){
 
-        if( p1 > p2 ){
-            if(memoria[p2][p1] > 0){
-                return true;
-            }else{
-                return false;
-            }
-        }else{
-            if(memoria[p1][p2] > 0){
-                return true;
-            }else{
-                return false;
+    /**
+     * @Brief genera un Vecino usando profundidad y anchura en su busqueda
+     * @return Vecino con un vector equilibrado en anchura y profundidad
+     */
+    private Vecino generarEquilibrado(){
+        int numRand;
+        int posAct;
+        int[] nuevoVector = new int[mejorGlobal.get_vector_sol().length];
+        for (int i = 0; i < mejorGlobal.get_vector_sol().length ; i++){
+            numRand = random.nextInt(2) + 1; // Genera 1 o 2
+
+            if (numRand == 1) { // profundidad , desplazamiento dirigido por la memoria a largo plazo
+               do {
+                   posAct = mejorLargoPlazo(random.nextInt(mejorGlobal.get_vector_sol().length));
+               }while( contains(nuevoVector, posAct));
+
+               nuevoVector[i] = posAct;
+            } else {  // anchura, desplazamiento aleatorizado
+
+                do {
+                    posAct = random.nextInt(mejorGlobal.get_vector_sol().length);
+                }while( contains(nuevoVector, posAct));
+                nuevoVector[i] = posAct;
             }
         }
 
+        return new Vecino(nuevoVector);
     }
+
+    /**
+     * @Brief funcion auxiliar para encontrar el mejor candidato de una fila en desplazamiento en profundidad
+     * @param fila
+     * @return mejor pos
+     */
+    private int mejorLargoPlazo(int fila){
+       int max = 0;
+        for (int columna = 0; columna < fila; columna++) {
+            if (memoria[fila][columna] > max) {
+                max = memoria[fila][columna];
+            }
+        }
+        return max;
+    }
+
+    /**
+     * @Brief funcion auxiliar para saber si el vector contiene un numero
+     * @param v
+     * @param num
+     * @return
+     */
+    public boolean contains(int[] v, int num) {
+        for (int i : v) {
+            if (i == num) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
  //sino encuentra mejor vecino devuelve el mejor vecino previo, por lo que si al devolver es distinto al mejor vecino significa que es mejor
