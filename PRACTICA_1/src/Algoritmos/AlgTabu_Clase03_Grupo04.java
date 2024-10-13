@@ -180,9 +180,9 @@ public class AlgTabu_Clase03_Grupo04 {
             }
         }
         if(dere > izq ){
-            memoria[dere][izq] ++;
+            memoria[dere][izq] = 10;
         }else{
-            memoria[izq][dere] ++;
+            memoria[izq][dere] = 10;
         }
     }
 

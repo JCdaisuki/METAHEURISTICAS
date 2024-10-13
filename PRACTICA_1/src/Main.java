@@ -5,8 +5,7 @@ import Algoritmos.AlgGreedy_Clase03_Grupo04;
 import Algoritmos.AlgBusquedaLocal_Clase03_Grupo04;
 import java.util.Random;
 
-public class Main
-{                               //TODO HACER LOGS QUE MUESTREN MEJORES LOCALES EN LOS LOGS DE LA TABU
+public class Main{
                                 //TODO HACER QUE EN LOS LOGS DE LA BUSQUEDA LOCAL MUESTRE EL RECORRIDO LOCAL
 
     public static void main(String[] args)
@@ -39,7 +38,7 @@ public class Main
 
         //Configuracion Tabu
         int maxite = 1000;
-        double empeoramientoPermitido = 0.5;
+        double empeoramientoPermitido = 0.08;
 
         // Bucle para cada archivo .tsp
         for (int i = 0; i < archivosTSP.length; i++)
