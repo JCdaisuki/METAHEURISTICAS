@@ -2,6 +2,8 @@ package Algoritmos;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+
+import ProcesadoFicheros.CreaLogs;
 import ProcesadoFicheros.LectorTSP;
 
 public class AlgTabu_Clase03_Grupo04 {
@@ -54,22 +56,20 @@ public class AlgTabu_Clase03_Grupo04 {
     double sinMejora ;// contador para soluciones sin mejora
     private Vecino mejorGlobal;
     private long semilla;
-    private int k;
-    private int tamVecindario;
     private ArrayList<Vecino> listaTabu = new ArrayList<Vecino>();
-    private int maxTamanoTabu;
     private int memoria[][];
+    private CreaLogs log;
 
 
     //constructor tabu
-    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double EmpeoramientoPermitido, Random r, int K, long Semilla){
+    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double EmpeoramientoPermitido, long Semilla, CreaLogs Log){
         this.lector = Lector;
         this.numIteraciones = Maxiteraciones;
         this.empeoramientoPermitido = EmpeoramientoPermitido;
-        this.k = K;
         this.semilla = Semilla;
         this.random = new Random(semilla);
         this.memoria = new int[lector.getCiudades().length][lector.getCiudades().length];
+        log = Log;
     }
 
     /**
@@ -88,15 +88,16 @@ public class AlgTabu_Clase03_Grupo04 {
             if(sinMejora>=numIteraciones*empeoramientoPermitido){
                 solAct = generarEquilibrado();
                 mejorLocal = solAct;
-                hayMejora(solAct, mejorGlobal);
+                hayMejora(solAct, mejorGlobal, ite,true);
 
             }else{
-                solAct = generarVecino(solAct);
-                hayMejora(solAct,mejorLocal);
-                if(solAct == mejorLocal){  //si el local es el mismo que el mejor local significa que hay cambios
+                generarVecino(solAct);
+                hayMejora(solAct,mejorLocal,ite,false);
+                if (solAct.getCosteTotal() == mejorLocal.getCosteTotal()) {//si el local es el mismo que el mejor local significa que hay cambios
                                             // y hay que comprobar si estamos ante un proximo mejor global
-                    hayMejora(mejorLocal,mejorGlobal);
+                    hayMejora(mejorLocal,mejorGlobal,ite,true);
                 }
+
             }
 
             ite++;
@@ -110,12 +111,22 @@ public class AlgTabu_Clase03_Grupo04 {
      * @param solAct
      * @param mejor
      */
-    private void hayMejora(Vecino solAct, Vecino mejor) {
-        if(solAct.getCosteTotal() < mejor.costeTotal){
-            mejor = solAct;
+    private void hayMejora(Vecino solAct, Vecino mejor, int iteracion,boolean introducirLog) {
+        if(solAct.getCosteTotal() < mejor.getCosteTotal()){
+            mejor.setVectorSol(solAct.get_vector_sol().clone());
+            mejor.CalcularCosteTotal();
             updateMemoriaLargo(mejor);
+            if(introducirLog){
+                log.aniadirEncontrado("MejorLocal en iteracion " + iteracion + ": " + solAct.getCosteTotal() + " (Es mejor Global actual)");
+                sinMejora = 0;
+            }
+
         }else{
             sinMejora++;
+            if(introducirLog){
+                log.aniadirEncontrado("MejorLocal en iteracion" + iteracion + ": " + solAct.getCosteTotal() + " (No es mejor Global)" + ", MejorGlobal = " + mejorGlobal.getCosteTotal());
+            }
+
         }
     }
 
@@ -125,7 +136,7 @@ public class AlgTabu_Clase03_Grupo04 {
      * @param solAct
      * @return
      */
-    private Vecino generarVecino(Vecino solAct) {
+    private void generarVecino(Vecino solAct) {
         int[] nuevaSolucion = solAct.get_vector_sol();
         int p2;
         int p1;
@@ -147,7 +158,8 @@ public class AlgTabu_Clase03_Grupo04 {
         updateMemoriaCorto(p1,p2);
 
         // Crear un nuevo Vecino a partir de la solución modificada
-        return new Vecino(nuevaSolucion);
+        solAct.setVectorSol(nuevaSolucion);
+        solAct.CalcularCosteTotal();
     }
 
     /**
@@ -167,13 +179,11 @@ public class AlgTabu_Clase03_Grupo04 {
                 }
             }
         }
-
         if(dere > izq ){
             memoria[dere][izq] ++;
         }else{
             memoria[izq][dere] ++;
         }
-
     }
 
     /**
@@ -233,22 +243,20 @@ public class AlgTabu_Clase03_Grupo04 {
         int numRand;
         int posAct;
         int[] nuevoVector = new int[mejorGlobal.get_vector_sol().length];
+        for(int i  = 0 ; i < nuevoVector.length ; i++){
+            nuevoVector[i] = -1;
+        }
         for (int i = 0; i < mejorGlobal.get_vector_sol().length ; i++){
-            numRand = random.nextInt(2) + 1; // Genera 1 o 2
-
+            do {
+                numRand = random.nextInt(2) + 1; // Genera 1 o 2
             if (numRand == 1) { // profundidad , desplazamiento dirigido por la memoria a largo plazo
-               do {
                    posAct = mejorLargoPlazo(random.nextInt(mejorGlobal.get_vector_sol().length));
-               }while( contains(nuevoVector, posAct));
-
-               nuevoVector[i] = posAct;
-            } else {  // anchura, desplazamiento aleatorizado
-
-                do {
+            }else{  // anchura, desplazamiento aleatorizado
                     posAct = random.nextInt(mejorGlobal.get_vector_sol().length);
-                }while( contains(nuevoVector, posAct));
-                nuevoVector[i] = posAct;
             }
+            }while( contains(nuevoVector, posAct));  // evitamos repetidos
+
+            nuevoVector[i] = posAct;  //el vector se rellena con la posicion conseguida por la busqueda de profundidad o anchura
         }
 
         return new Vecino(nuevoVector);
@@ -261,12 +269,14 @@ public class AlgTabu_Clase03_Grupo04 {
      */
     private int mejorLargoPlazo(int fila){
        int max = 0;
+       int posicion = 0;
         for (int columna = 0; columna < fila; columna++) {
             if (memoria[fila][columna] > max) {
                 max = memoria[fila][columna];
+                posicion = columna;
             }
         }
-        return max;
+        return posicion;
     }
 
     /**
