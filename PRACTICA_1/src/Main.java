@@ -61,7 +61,7 @@ public class Main
                 // Convertir la cadena de DNI a número
                 long dniNumerico = Long.parseLong(currentSeed);
 
-                // Ejecutar el algoritmo de Busqueda Local
+                // Ejecutar el algoritmo necesario
                 bLocal.ejecutarBusquedaLocal(greedy.RealizarGreedy(k, dniNumerico, lector), new Random(dniNumerico));
 
                 // Nombre del archivo de log basado en el archivo .tsp y la semilla ( creacion del txt incluida )
