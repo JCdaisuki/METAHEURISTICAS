@@ -1,6 +1,5 @@
 package Algoritmos;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 import ProcesadoFicheros.CreaLogs;
@@ -8,28 +7,22 @@ import ProcesadoFicheros.LectorTSP;
 
 public class AlgTabu_Clase03_Grupo04 {
 
-    private class Vecino
-    {
+    private class Vecino {
         private int[] vectorSol;
         private double costeTotal;
-        public Vecino(int[] solucion)
-        {
+
+        public Vecino(int[] solucion) {
             this.vectorSol = solucion;
             CalcularCosteTotal();
         }
 
-        public void CalcularCosteTotal()
-        {
+        public void CalcularCosteTotal() {
             double posible_nuevo_coste = 0;
 
-            for (int i = 0; i < vectorSol.length; i++)
-            {
-                if (i != 0)
-                {
+            for (int i = 0; i < vectorSol.length; i++) {
+                if (i != 0) {
                     posible_nuevo_coste += lector.getDistancias()[vectorSol[i]][vectorSol[i - 1]];
-                }
-                else
-                {
+                } else {
                     posible_nuevo_coste += lector.getDistancias()[vectorSol[i]][vectorSol[vectorSol.length - 1]];
                 }
             }
@@ -37,104 +30,137 @@ public class AlgTabu_Clase03_Grupo04 {
             costeTotal = posible_nuevo_coste;
         }
 
-        public double getCosteTotal()
-        {
+        public double getCosteTotal() {
             return costeTotal;
         }
-        public int[] get_vector_sol()
-        {
+
+        public int[] get_vector_sol() {
             return vectorSol;
         }
-        public void setVectorSol(int[] sol){vectorSol=sol;}
+
+        public void setVectorSol(int[] sol) {
+            vectorSol = sol;
+            CalcularCosteTotal();
+        }
     }
 
     private LectorTSP lector;
     private Random random;
     private int numIteraciones;
-    private double empeoramientoPermitido;
+    private double estancamiento;
     private double mejorSolucion;
-    double sinMejora ;// contador para soluciones sin mejora
+    double sinMejora;// contador para soluciones sin mejora
     private Vecino mejorGlobal;
     private long semilla;
     private ArrayList<Vecino> listaTabu = new ArrayList<Vecino>();
     private int memoria[][];
     private CreaLogs log;
+    private double tamEntorno;
+    private double disminucionEntorno;
+    private int iteCambioEntorno;
+    private int tenencia;
+    private double oscilacion;
+    private ArrayList<Integer> iteraciones;
 
 
     //constructor tabu
-    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double EmpeoramientoPermitido, long Semilla, CreaLogs Log){
+    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double Estancamiento, long Semilla, CreaLogs Log, double PorcientoTamEntorno, double DisminucionEntorno, int IteCambioEntorno, int Tenencia, double Oscilacion) {
         this.lector = Lector;
         this.numIteraciones = Maxiteraciones;
-        this.empeoramientoPermitido = EmpeoramientoPermitido;
+        this.estancamiento = Estancamiento;
         this.semilla = Semilla;
         this.random = new Random(semilla);
         this.memoria = new int[lector.getCiudades().length][lector.getCiudades().length];
+        this.tamEntorno = numIteraciones * PorcientoTamEntorno;
+        this.disminucionEntorno = DisminucionEntorno;
+        this.iteCambioEntorno = IteCambioEntorno;
+        this.tenencia = Tenencia;
+        this.oscilacion = Oscilacion;
         log = Log;
+        this.iteraciones = new ArrayList<>();
+
+
+        int incremento = (int) (numIteraciones * (iteCambioEntorno / 100.0)); // Calcula el incremento del % en base a numIteraciones
+        for (int i = incremento; i <= numIteraciones; i += incremento) {
+            iteraciones.add(i); // Agrega cada múltiplo al ArrayList
+        }
     }
 
     /**
-     * @Brief Ejecutor del Tabu
      * @param vInicial
      * @return costeMejorSolucion ( double )
+     * @Brief Ejecutor del Tabu
      */
-    public double ejecutarTabu(int[] vInicial){
-         mejorGlobal = new Vecino(vInicial);
+    public double ejecutarTabu(int[] vInicial) {
+        mejorGlobal = new Vecino(vInicial);
         Vecino solAct = new Vecino(vInicial);
         Vecino mejorLocal = new Vecino(vInicial);
-        sinMejora = 0 ; //inicializo contador de no mejoras
-        int ite=0;
+        sinMejora = 0; //inicializo contador de no mejoras
+        int ite = 0;
 
-        while(numIteraciones>ite){
-            if(sinMejora>=numIteraciones*empeoramientoPermitido){
+        while (numIteraciones > ite) {
+            if (sinMejora >= numIteraciones * estancamiento) {
                 solAct = generarEquilibrado();
-                mejorLocal = solAct;
-                hayMejora(solAct, mejorGlobal, ite,true);
+                mejorLocal.setVectorSol(solAct.get_vector_sol());
+                comprobarMejorGlobal(solAct,ite);
+                generarVecindario(solAct,mejorLocal,ite);
 
-            }else{
-                generarVecino(solAct);
-                hayMejora(solAct,mejorLocal,ite,false);
-                if (solAct.getCosteTotal() == mejorLocal.getCosteTotal()) {//si el local es el mismo que el mejor local significa que hay cambios
-                                            // y hay que comprobar si estamos ante un proximo mejor global
-                    hayMejora(mejorLocal,mejorGlobal,ite,true);
-                }
-
+            } else {
+                generarVecindario(solAct,mejorLocal,ite);
             }
-
+            reducionEntorno(ite);
             ite++;
         }
         mejorSolucion = mejorGlobal.getCosteTotal();
         return mejorSolucion;
     }
 
+
+    private void reducionEntorno(int iteracion){
+
+        if(iteraciones.contains(iteracion)){
+            tamEntorno = tamEntorno * disminucionEntorno;
+        }
+    }
+
+    private void generarVecindario(Vecino solAct, Vecino mejorLocal,int ite){
+        for(int i = 0; i < tamEntorno ; i++){
+            generarVecino(solAct);
+            funcionEvaluacion(solAct,mejorLocal);
+            comprobarMejorGlobal(solAct,ite);
+        }
+    }
+
     /**
-     * @Brief Comprobacion de mejora en la busqueda local
      * @param solAct
      * @param mejor
+      * @Brief Comprobacion de mejora en la busqueda local
      */
-    private void hayMejora(Vecino solAct, Vecino mejor, int iteracion,boolean introducirLog) {
-        if(solAct.getCosteTotal() < mejor.getCosteTotal()){
+    private void funcionEvaluacion(Vecino solAct, Vecino mejor) {
+        if (solAct.getCosteTotal() < mejor.getCosteTotal()) {
             mejor.setVectorSol(solAct.get_vector_sol().clone());
-            mejor.CalcularCosteTotal();
             updateMemoriaLargo(mejor);
-            if(introducirLog){
-                log.aniadirEncontrado("MejorLocal en iteracion " + iteracion + ": " + solAct.getCosteTotal() + " (Es mejor Global actual)");
-                sinMejora = 0;
-            }
+        }
+    }
 
+    private void comprobarMejorGlobal(Vecino solAct, int iteracion){
+        if(solAct.getCosteTotal()<mejorGlobal.getCosteTotal()){
+            mejorGlobal.setVectorSol(solAct.get_vector_sol().clone());
+            refreshMemoriaCorto();
+            sinMejora = 0;
+            log.aniadirEncontrado("MejorLocal en iteracion " + iteracion + ": " + solAct.getCosteTotal() + " (Es mejor Global actual)");
         }else{
             sinMejora++;
-            if(introducirLog){
-                log.aniadirEncontrado("MejorLocal en iteracion" + iteracion + ": " + solAct.getCosteTotal() + " (No es mejor Global)" + ", MejorGlobal = " + mejorGlobal.getCosteTotal());
-            }
+            log.aniadirEncontrado("MejorLocal en iteracion" + iteracion + ": " + solAct.getCosteTotal() + " (No es mejor Global)" + ", MejorGlobal = " + mejorGlobal.getCosteTotal());
 
         }
     }
 
     /**
-     * @Brief funcion que genera el vecino cambiando dos posiciones del vector entre si
-     * //hay comprobaciones previas como revisar si esta en la lista a corto plazo o tambien revisar que no sean la misma posicion
      * @param solAct
      * @return
+     * @Brief funcion que genera el vecino cambiando dos posiciones del vector entre si
+     * //hay comprobaciones previas como revisar si esta en la lista a corto plazo o tambien revisar que no sean la misma posicion
      */
     private void generarVecino(Vecino solAct) {
         int[] nuevaSolucion = solAct.get_vector_sol();
@@ -142,11 +168,10 @@ public class AlgTabu_Clase03_Grupo04 {
         int p1;
 
         // Generar dos índices aleatorios para intercambiar usando el Random con semilla y revisando la memoria a corto
+        do {
             p1 = random.nextInt(nuevaSolucion.length);
-            do {
-                p2 = random.nextInt(nuevaSolucion.length);
-            } while (p1 == p2 || checkMemoriaCorto(p1,p2));
-
+            p2 = random.nextInt(nuevaSolucion.length);
+        } while (p1 == p2 || checkMemoriaCorto(p1, p2));
 
 
         // Intercambiar las ciudades en las posiciones p1 y p2
@@ -155,7 +180,7 @@ public class AlgTabu_Clase03_Grupo04 {
         nuevaSolucion[p2] = temp;
 
         //actualizamos memoria a corto plazo con p1 y p2
-        updateMemoriaCorto(p1,p2);
+        updateMemoriaCorto(p1, p2);
 
         // Crear un nuevo Vecino a partir de la solución modificada
         solAct.setVectorSol(nuevaSolucion);
@@ -163,51 +188,62 @@ public class AlgTabu_Clase03_Grupo04 {
     }
 
     /**
-     * @Brief Actualizacion de la memoria a Corto plazo
      * @param dere
      * @param izq
+     * @Brief Actualizacion de la memoria a Corto plazo
      */
-    private void updateMemoriaCorto(int dere, int izq){
+    private void updateMemoriaCorto(int dere, int izq) {
         //actualizacion corto plazo
 
-        for(int i = 0; i < memoria.length ; i++ ){
-            for(int j = i; j < memoria[i].length ; j++ ){
-                if( j != i){
-                    if(memoria[i][j] > 0){
-                        memoria[i][j] --;
-                    }
+        for (int i = 0; i < memoria.length; i++) {
+            for (int j = i; j < memoria[i].length; j++) {
+                if (j != i && memoria[i][j] > 0) {
+                    memoria[i][j]--;
                 }
             }
         }
-        if(dere > izq ){
-            memoria[dere][izq] = 10;
-        }else{
-            memoria[izq][dere] = 10;
+        if (dere < izq) {
+            memoria[dere][izq] = tenencia;
+        } else {
+            memoria[izq][dere] = tenencia;
+        }
+    }
+
+
+    private void refreshMemoriaCorto(){
+        for (int i = 0; i < memoria.length; i++) {
+            for (int j = i; j < memoria[i].length; j++) {
+                if (j != i && memoria[i][j] > 0) {
+                    memoria[i][j] = 0;
+                }
+            }
         }
     }
 
     /**
-     * @Brief revision de la memoria a corto plazo para ver el uso del cambio propuesto por el aleatorio
-     *     //devuelve true en caso de estar en la memoria a corto plazo con mas de 1 "flag"
      * @param p1
      * @param p2
      * @return
+     * @Brief revision de la memoria a corto plazo para ver el uso del cambio propuesto por el aleatorio
+     * //devuelve true en caso de estar en la memoria a corto plazo con mas de 1 "flag"
      */
-    private boolean checkMemoriaCorto(int p1, int p2){
-        if(p1>p2){
-            if(memoria[p2][p1] > 0){
+    private boolean checkMemoriaCorto(int p1, int p2) {
+        if (p1 > p2) {
+            if (memoria[p2][p1] > 0) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }else{
-            if(memoria[p1][p2] > 0){
+        } else {
+            if (memoria[p1][p2] > 0) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
     }
+
+
 
     /**
      * @Brief Actualizacion de la Mermoria a largo plazo, sumando puntuacion en los arcos del vector incluyendo el ultimo con el primero
@@ -239,24 +275,30 @@ public class AlgTabu_Clase03_Grupo04 {
      * @Brief genera un Vecino usando profundidad y anchura en su busqueda
      * @return Vecino con un vector equilibrado en anchura y profundidad
      */
-    private Vecino generarEquilibrado(){
+    private Vecino generarEquilibrado() {
         int numRand;
         int posAct;
         int[] nuevoVector = new int[mejorGlobal.get_vector_sol().length];
-        for(int i  = 0 ; i < nuevoVector.length ; i++){
+
+        // Inicializamos el vector con -1 para evitar valores no deseados
+        for(int i = 0; i < nuevoVector.length; i++) {
             nuevoVector[i] = -1;
         }
-        for (int i = 0; i < mejorGlobal.get_vector_sol().length ; i++){
-            do {
-                numRand = random.nextInt(2) + 1; // Genera 1 o 2
-            if (numRand == 1) { // profundidad , desplazamiento dirigido por la memoria a largo plazo
-                   posAct = mejorLargoPlazo(random.nextInt(mejorGlobal.get_vector_sol().length));
-            }else{  // anchura, desplazamiento aleatorizado
-                    posAct = random.nextInt(mejorGlobal.get_vector_sol().length);
-            }
-            }while( contains(nuevoVector, posAct));  // evitamos repetidos
 
-            nuevoVector[i] = posAct;  //el vector se rellena con la posicion conseguida por la busqueda de profundidad o anchura
+        // Recorremos el vector solución
+        for (int i = 0; i < mejorGlobal.get_vector_sol().length; i++) {
+            do {
+                // Generamos un número aleatorio entre 0 y 100 para decidir según la oscilación
+                numRand = random.nextInt(100); // 0 - 99
+
+                if (numRand < oscilacion) { // profundidad, desplazamiento dirigido por la memoria a largo plazo
+                    posAct = mejorLargoPlazo(random.nextInt(mejorGlobal.get_vector_sol().length));
+                } else {  // anchura, desplazamiento aleatorizado
+                    posAct = random.nextInt(mejorGlobal.get_vector_sol().length);
+                }
+            } while(contains(nuevoVector, posAct));  // Evitamos posiciones repetidas
+
+            nuevoVector[i] = posAct;  // Rellenamos el vector con la posición seleccionada
         }
 
         return new Vecino(nuevoVector);
@@ -293,66 +335,6 @@ public class AlgTabu_Clase03_Grupo04 {
         }
         return false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- //sino encuentra mejor vecino devuelve el mejor vecino previo, por lo que si al devolver es distinto al mejor vecino significa que es mejor
-    private Vecino buscarMejorVecino(int tamVecindario,Vecino solAct) {
-        Vecino mejorVecinoLocal = mejorGlobal;
-
-        for (int j = 0; j < tamVecindario; j++) {
-            Vecino vecino = generarVecino(solAct);  // Genera un nuevo vecino
-
-            // Verifica que no esté en la lista tabú antes de considerarlo
-            if (!esTabu(vecino) && vecino.getCosteTotal() < mejorGlobal.getCosteTotal()) {
-                mejorVecinoLocal = vecino;
-            }
-        }
-
-        return mejorVecinoLocal;  // Retorna el mejor vecino encontrado o el mejor anterior en caso de no encontrar mejor
-    }
-    private boolean esTabu(Vecino solucion) {
-        for (Vecino solTabu : listaTabu) {
-
-            if (Arrays.equals(solucion.get_vector_sol(), solTabu.get_vector_sol())) {
-                return true;  // La solucion está en la lista tabú
-            }
-        }
-        return false;  // La solucion no está en la lista tabú
-    }
-
- */
-
 }
 
 

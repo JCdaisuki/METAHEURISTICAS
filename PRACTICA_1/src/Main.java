@@ -81,7 +81,7 @@ public class Main{
                 logAndPrint(log, mensaje,"Tiempo de ejecución: " + duracion + " milisegundos");
 
                  startTime = System.currentTimeMillis();
-                AlgTabu_Clase03_Grupo04 tabu = new AlgTabu_Clase03_Grupo04(lector,maxite,empeoramientoPermitido,dniNumerico,log);
+                AlgTabu_Clase03_Grupo04 tabu = new AlgTabu_Clase03_Grupo04(lector,5000,0.5,dniNumerico,log,0.08,0.1,10,10,50);
                 double mejorTabu = tabu.ejecutarTabu(greedy.RealizarGreedy(k,dniNumerico,lector));
 
 
