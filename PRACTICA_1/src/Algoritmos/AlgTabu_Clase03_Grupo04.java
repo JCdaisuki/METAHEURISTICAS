@@ -49,7 +49,7 @@ public class AlgTabu_Clase03_Grupo04 {
     private int numIteraciones;
     private double estancamiento;
     private double mejorSolucion;
-    double sinMejora;// contador para soluciones sin mejora
+    double movimientosEmpeoramiento;// contador para soluciones sin mejora
     private Vecino mejorGlobal;
     private long semilla;
     private ArrayList<Vecino> listaTabu = new ArrayList<Vecino>();
@@ -57,14 +57,14 @@ public class AlgTabu_Clase03_Grupo04 {
     private CreaLogs log;
     private double tamEntorno;
     private double disminucionEntorno;
-    private int iteCambioEntorno;
+    private double iteCambioEntorno;
     private int tenencia;
     private double oscilacion;
     private ArrayList<Integer> iteraciones;
 
 
     //constructor tabu
-    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double Estancamiento, long Semilla, CreaLogs Log, double PorcientoTamEntorno, double DisminucionEntorno, int IteCambioEntorno, int Tenencia, double Oscilacion) {
+    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double Estancamiento, long Semilla, CreaLogs Log, double PorcientoTamEntorno, double DisminucionEntorno, double IteCambioEntorno, int Tenencia, double Oscilacion) {
         this.lector = Lector;
         this.numIteraciones = Maxiteraciones;
         this.estancamiento = Estancamiento;
@@ -80,7 +80,7 @@ public class AlgTabu_Clase03_Grupo04 {
         this.iteraciones = new ArrayList<>();
 
 
-        int incremento = (int) (numIteraciones * (iteCambioEntorno / 100.0)); // Calcula el incremento del % en base a numIteraciones
+        int incremento = (int) (numIteraciones * (iteCambioEntorno));
         for (int i = incremento; i <= numIteraciones; i += incremento) {
             iteraciones.add(i); // Agrega cada múltiplo al ArrayList
         }
@@ -95,11 +95,11 @@ public class AlgTabu_Clase03_Grupo04 {
         mejorGlobal = new Vecino(vInicial);
         Vecino solAct = new Vecino(vInicial);
         Vecino mejorLocal = new Vecino(vInicial);
-        sinMejora = 0; //inicializo contador de no mejoras
+        movimientosEmpeoramiento = 0; //inicializo contador de no mejoras
         int ite = 0;
 
         while (numIteraciones > ite) {
-            if (sinMejora >= numIteraciones * estancamiento) {
+            if (movimientosEmpeoramiento >= numIteraciones * estancamiento) {
                 solAct = generarEquilibrado();
                 mejorLocal.setVectorSol(solAct.get_vector_sol());
                 comprobarMejorGlobal(solAct,ite);
@@ -127,7 +127,9 @@ public class AlgTabu_Clase03_Grupo04 {
         for(int i = 0; i < tamEntorno ; i++){
             generarVecino(solAct);
             funcionEvaluacion(solAct,mejorLocal);
-            comprobarMejorGlobal(solAct,ite);
+            if(solAct.get_vector_sol().equals(mejorLocal.get_vector_sol())){
+                comprobarMejorGlobal(solAct,ite);
+            }
         }
     }
 
@@ -147,10 +149,10 @@ public class AlgTabu_Clase03_Grupo04 {
         if(solAct.getCosteTotal()<mejorGlobal.getCosteTotal()){
             mejorGlobal.setVectorSol(solAct.get_vector_sol().clone());
             refreshMemoriaCorto();
-            sinMejora = 0;
+            movimientosEmpeoramiento = 0;
             log.aniadirEncontrado("MejorLocal en iteracion " + iteracion + ": " + solAct.getCosteTotal() + " (Es mejor Global actual)");
         }else{
-            sinMejora++;
+            movimientosEmpeoramiento++;
             log.aniadirEncontrado("MejorLocal en iteracion" + iteracion + ": " + solAct.getCosteTotal() + " (No es mejor Global)" + ", MejorGlobal = " + mejorGlobal.getCosteTotal());
 
         }
