@@ -2,48 +2,12 @@ package Algoritmos;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Auxiliares.Vecino;
 import ProcesadoFicheros.CreaLogs;
 import ProcesadoFicheros.LectorTSP;
 
-public class AlgTabu_Clase03_Grupo04 {
-
-    private class Vecino {
-        private int[] vectorSol;
-        private double costeTotal;
-
-        public Vecino(int[] solucion) {
-            this.vectorSol = solucion;
-            CalcularCosteTotal();
-        }
-
-        public void CalcularCosteTotal() {
-            double posible_nuevo_coste = 0;
-
-            for (int i = 0; i < vectorSol.length; i++) {
-                if (i != 0) {
-                    posible_nuevo_coste += lector.getDistancias()[vectorSol[i]][vectorSol[i - 1]];
-                } else {
-                    posible_nuevo_coste += lector.getDistancias()[vectorSol[i]][vectorSol[vectorSol.length - 1]];
-                }
-            }
-
-            costeTotal = posible_nuevo_coste;
-        }
-
-        public double getCosteTotal() {
-            return costeTotal;
-        }
-
-        public int[] get_vector_sol() {
-            return vectorSol;
-        }
-
-        public void setVectorSol(int[] sol) {
-            vectorSol = sol;
-            CalcularCosteTotal();
-        }
-    }
-
+public class AlgTabu_Clase03_Grupo04
+{
     private LectorTSP lector;
     private Random random;
     private int numIteraciones;
@@ -92,9 +56,9 @@ public class AlgTabu_Clase03_Grupo04 {
      * @Brief Ejecutor del Tabu
      */
     public double ejecutarTabu(int[] vInicial) {
-        mejorGlobal = new Vecino(vInicial);
-        Vecino solAct = new Vecino(vInicial);
-        Vecino mejorLocal = new Vecino(vInicial);
+        mejorGlobal = new Vecino(vInicial, lector);
+        Vecino solAct = new Vecino(vInicial, lector);
+        Vecino mejorLocal = new Vecino(vInicial, lector);
         sinMejora = 0; //inicializo contador de no mejoras
         int ite = 0;
 
@@ -111,7 +75,7 @@ public class AlgTabu_Clase03_Grupo04 {
             reducionEntorno(ite);
             ite++;
         }
-        mejorSolucion = mejorGlobal.getCosteTotal();
+        mejorSolucion = mejorGlobal.GetCosteTotal();
         return mejorSolucion;
     }
 
@@ -137,21 +101,21 @@ public class AlgTabu_Clase03_Grupo04 {
       * @Brief Comprobacion de mejora en la busqueda local
      */
     private void funcionEvaluacion(Vecino solAct, Vecino mejor) {
-        if (solAct.getCosteTotal() < mejor.getCosteTotal()) {
+        if (solAct.GetCosteTotal() < mejor.GetCosteTotal()) {
             mejor.setVectorSol(solAct.get_vector_sol().clone());
             updateMemoriaLargo(mejor);
         }
     }
 
     private void comprobarMejorGlobal(Vecino solAct, int iteracion){
-        if(solAct.getCosteTotal()<mejorGlobal.getCosteTotal()){
+        if(solAct.GetCosteTotal()<mejorGlobal.GetCosteTotal()){
             mejorGlobal.setVectorSol(solAct.get_vector_sol().clone());
             refreshMemoriaCorto();
             sinMejora = 0;
-            log.aniadirEncontrado("MejorLocal en iteracion " + iteracion + ": " + solAct.getCosteTotal() + " (Es mejor Global actual)");
+            log.aniadirEncontrado("MejorLocal en iteracion " + iteracion + ": " + solAct.GetCosteTotal() + " (Es mejor Global actual)");
         }else{
             sinMejora++;
-            log.aniadirEncontrado("MejorLocal en iteracion" + iteracion + ": " + solAct.getCosteTotal() + " (No es mejor Global)" + ", MejorGlobal = " + mejorGlobal.getCosteTotal());
+            log.aniadirEncontrado("MejorLocal en iteracion" + iteracion + ": " + solAct.GetCosteTotal() + " (No es mejor Global)" + ", MejorGlobal = " + mejorGlobal.GetCosteTotal());
 
         }
     }
@@ -301,7 +265,7 @@ public class AlgTabu_Clase03_Grupo04 {
             nuevoVector[i] = posAct;  // Rellenamos el vector con la posición seleccionada
         }
 
-        return new Vecino(nuevoVector);
+        return new Vecino(nuevoVector, lector);
     }
 
     /**
