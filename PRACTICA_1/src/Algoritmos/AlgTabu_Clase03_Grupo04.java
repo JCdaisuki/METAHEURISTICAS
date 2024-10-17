@@ -118,15 +118,15 @@ public class AlgTabu_Clase03_Grupo04
     }
 
     private void comprobarMejorGlobal(Vecino solAct, int iteracion){
-        if(solAct.GetCosteTotal()<mejorGlobal.GetCosteTotal()){
+        if(solAct.GetCosteTotal()<mejorGlobal.GetCosteTotal())
+        {
             mejorGlobal.setVectorSol(solAct.get_vector_sol().clone());
             refreshMemoriaCorto();
             sinMejora = 0;
-            log.aniadirEncontrado("MejorLocal en iteracion " + iteracion + ": " + solAct.GetCosteTotal() + " (Es mejor Global actual)");
-        }else{
+        }
+        else
+        {
             sinMejora++;
-            log.aniadirEncontrado("MejorLocal en iteracion" + iteracion + ": " + solAct.GetCosteTotal() + " (No es mejor Global)" + ", MejorGlobal = " + mejorGlobal.GetCosteTotal());
-
         }
     }
 

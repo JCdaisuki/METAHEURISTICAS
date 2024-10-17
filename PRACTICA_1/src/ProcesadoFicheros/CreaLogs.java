@@ -9,6 +9,7 @@ import java.util.List;
 public class CreaLogs {
     private FileWriter escritor;
     private List<String> mejoresLocales; // Lista para almacenar los mejores locales
+
     public CreaLogs(String nombreArchivo) {
         try {
             escritor = new FileWriter(nombreArchivo, true); // true para añadir al archivo en lugar de sobrescribir
@@ -37,9 +38,7 @@ public class CreaLogs {
             e.printStackTrace();
         }
     }
-    public void aniadirEncontrado(String mensajeMejorLocal) {
-        mejoresLocales.add(mensajeMejorLocal); // Añadir el mensaje a la lista
-    }
+
     public void escribirMejoresLocales() {
         try {
             escritor.write("\n" + "\n" + "\n");
