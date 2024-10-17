@@ -1,2 +1,0 @@
-Iteración 4 (Seed: 20082062) - Busqueda Local: 18623063,766901
-Tiempo de ejecución: 7921808 milisegundos

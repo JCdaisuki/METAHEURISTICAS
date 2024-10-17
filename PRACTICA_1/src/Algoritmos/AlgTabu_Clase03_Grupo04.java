@@ -28,11 +28,10 @@ public class AlgTabu_Clase03_Grupo04
 
 
     //constructor tabu
-    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double Estancamiento, long Semilla, CreaLogs Log, double PorcientoTamEntorno, double DisminucionEntorno, int IteCambioEntorno, int Tenencia, double Oscilacion) {
+    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double Estancamiento, double PorcientoTamEntorno, double DisminucionEntorno, int IteCambioEntorno, int Tenencia, double Oscilacion) {
         this.lector = Lector;
         this.numIteraciones = Maxiteraciones;
         this.estancamiento = Estancamiento;
-        this.semilla = Semilla;
         this.random = new Random(semilla);
         this.memoria = new int[lector.getCiudades().length][lector.getCiudades().length];
         this.tamEntorno = numIteraciones * PorcientoTamEntorno;
@@ -40,7 +39,6 @@ public class AlgTabu_Clase03_Grupo04
         this.iteCambioEntorno = IteCambioEntorno;
         this.tenencia = Tenencia;
         this.oscilacion = Oscilacion;
-        log = Log;
         this.iteraciones = new ArrayList<>();
 
 
@@ -50,12 +48,21 @@ public class AlgTabu_Clase03_Grupo04
         }
     }
 
+    public void SetSemilla(long semilla)
+    {
+        this.semilla = semilla;
+    }
+
+    public void SetLog(CreaLogs log)
+    {
+        this.log = log;
+    }
+
     /**
      * @param vInicial
-     * @return costeMejorSolucion ( double )
      * @Brief Ejecutor del Tabu
      */
-    public double ejecutarTabu(int[] vInicial) {
+    public void ejecutarTabu(int[] vInicial) {
         mejorGlobal = new Vecino(vInicial, lector);
         Vecino solAct = new Vecino(vInicial, lector);
         Vecino mejorLocal = new Vecino(vInicial, lector);
@@ -76,9 +83,12 @@ public class AlgTabu_Clase03_Grupo04
             ite++;
         }
         mejorSolucion = mejorGlobal.GetCosteTotal();
-        return mejorSolucion;
     }
 
+    public double GetMejorSolucion()
+    {
+        return mejorSolucion;
+    }
 
     private void reducionEntorno(int iteracion){
 

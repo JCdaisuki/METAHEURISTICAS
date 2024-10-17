@@ -9,11 +9,6 @@ public class AlgGreedy_Clase03_Grupo04
 {
     private double mejorCoste;
 
-    public double GetMejorCoste()
-    {
-        return mejorCoste;
-    }
-
     public AlgGreedy_Clase03_Grupo04() {}
 
     // Función que realiza el algoritmo Greedy Aleatorio
@@ -71,7 +66,7 @@ public class AlgGreedy_Clase03_Grupo04
 
         mejorCoste = distTotal;
         return resultado;
-        }
+    }
 
     // Función auxiliar para ordenar el vector de ciudades en orden de menor a mayor distancia total al resto de ciudades
     private List<CiudadInfo> OrdenarCiudades(LectorTSP lector)
@@ -95,5 +90,10 @@ public class AlgGreedy_Clase03_Grupo04
         ciudadInfos.sort((c1, c2) -> Double.compare(c1.GetDistTotal(), c2.GetDistTotal()));
 
         return ciudadInfos;
+    }
+
+    public double GetMejorCoste()
+    {
+        return mejorCoste;
     }
 }
