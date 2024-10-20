@@ -142,4 +142,15 @@ public class LectorTSP
     {
         return distancias;
     }
+
+    // Obtener la distancia entre dos ciudades específicas
+    public double getDistancia(int ciudad1, int ciudad2)
+    {
+        // Verifica que los índices sean válidos dentro del rango
+        if (ciudad1 >= 0 && ciudad1 < distancias.length && ciudad2 >= 0 && ciudad2 < distancias.length) {
+            return distancias[ciudad1][ciudad2];
+        } else {
+            throw new IndexOutOfBoundsException("Índices de las ciudades fuera de rango: " + ciudad1 + ", " + ciudad2);
+        }
+    }
 }

@@ -25,6 +25,7 @@ public class AlgTabu_Clase03_Grupo04
     private int tenencia;
     private double oscilacion;
     private ArrayList<Integer> iteraciones;
+    private Vecino mejor_momento_actual; // NUEVO: Variable para almacenar la mejor solución en la iteración actual
 
 
     //constructor tabu
@@ -66,24 +67,62 @@ public class AlgTabu_Clase03_Grupo04
         mejorGlobal = new Vecino(vInicial, lector);
         Vecino solAct = new Vecino(vInicial, lector);
         Vecino mejorLocal = new Vecino(vInicial, lector);
-        sinMejora = 0; //inicializo contador de no mejoras
+        mejor_momento_actual = new Vecino(vInicial, lector); // Inicializar mejor_momento_actual
+        sinMejora = 0; // Inicializar contador de no mejoras
         int ite = 0;
+        int estancamientoLimite = (int) (numIteraciones * 0.05); // 5% de movimientos de empeoramiento
 
-        while (numIteraciones > ite) {
-            if (sinMejora >= numIteraciones * estancamiento) {
-                solAct = generarEquilibrado();
+        while (numIteraciones > ite)
+        {
+            // Si el algoritmo se ha estancado, generar una nueva solución aleatoria
+            if (sinMejora >= estancamientoLimite)
+            {
+                solAct = generarSolucionGreedy(); // Generar nueva solución inicial
                 mejorLocal.setVectorSol(solAct.get_vector_sol());
-                comprobarMejorGlobal(solAct,ite);
-                generarVecindario(solAct,mejorLocal,ite);
-
-            } else {
-                generarVecindario(solAct,mejorLocal,ite);
+                sinMejora = 0; // Resetear el contador de estancamiento
+                mejor_momento_actual.setVectorSol(solAct.get_vector_sol());
+                comprobarMejorGlobal(solAct, ite);
             }
+
+            // Evaluar el vecindario
+            generarVecindario(solAct, mejorLocal, ite);
+
+            // Actualizar el mejor momento de la iteración
+            if (mejorLocal.GetCosteTotal() < mejor_momento_actual.GetCosteTotal()) {
+                mejor_momento_actual.setVectorSol(mejorLocal.get_vector_sol().clone());
+            } else {
+                // Incrementar el contador de movimientos de empeoramiento
+                sinMejora++;
+            }
+
             reducionEntorno(ite);
             ite++;
         }
         mejorSolucion = mejorGlobal.GetCosteTotal();
     }
+
+    private Vecino generarSolucionGreedy() {
+        int[] nuevoVector = new int[mejorGlobal.get_vector_sol().length];
+        // Lógica para generar una solución greedy
+        boolean[] visitado = new boolean[nuevoVector.length];
+        nuevoVector[0] = random.nextInt(nuevoVector.length); // Seleccionar aleatoriamente la primera ciudad
+        visitado[nuevoVector[0]] = true;
+
+        for (int i = 1; i < nuevoVector.length; i++) {
+            int mejorCiudad = -1;
+            double mejorDistancia = Double.MAX_VALUE;
+            for (int j = 0; j < nuevoVector.length; j++) {
+                if (!visitado[j] && lector.getDistancia(nuevoVector[i - 1], j) < mejorDistancia) {
+                    mejorDistancia = lector.getDistancia(nuevoVector[i - 1], j);
+                    mejorCiudad = j;
+                }
+            }
+            nuevoVector[i] = mejorCiudad;
+            visitado[mejorCiudad] = true;
+        }
+        return new Vecino(nuevoVector, lector);
+    }
+
 
     public double GetMejorSolucion()
     {
@@ -97,12 +136,20 @@ public class AlgTabu_Clase03_Grupo04
         }
     }
 
-    private void generarVecindario(Vecino solAct, Vecino mejorLocal,int ite){
-        for(int i = 0; i < tamEntorno ; i++){
+    private void generarVecindario(Vecino solAct, Vecino mejorLocal, int ite) {
+        mejor_momento_actual = new Vecino(solAct.get_vector_sol(), lector); // Resetear mejor_momento_actual
+        for (int i = 0; i < tamEntorno; i++) {
             generarVecino(solAct);
-            funcionEvaluacion(solAct,mejorLocal);
-            comprobarMejorGlobal(solAct,ite);
+            funcionEvaluacion(solAct, mejorLocal);
+
+            // Actualizar mejor_momento_actual si la solución actual es mejor que la mejor_momento_actual
+            if (solAct.GetCosteTotal() < mejor_momento_actual.GetCosteTotal()) {
+                mejor_momento_actual.setVectorSol(solAct.get_vector_sol().clone());
+            }
+            comprobarMejorGlobal(solAct, ite);
         }
+        // Moverse a mejor_momento_actual aunque sea un movimiento de empeoramiento
+        solAct.setVectorSol(mejor_momento_actual.get_vector_sol().clone());
     }
 
     /**
@@ -167,8 +214,6 @@ public class AlgTabu_Clase03_Grupo04
      * @Brief Actualizacion de la memoria a Corto plazo
      */
     private void updateMemoriaCorto(int dere, int izq) {
-        //actualizacion corto plazo
-
         for (int i = 0; i < memoria.length; i++) {
             for (int j = i; j < memoria[i].length; j++) {
                 if (j != i && memoria[i][j] > 0) {
@@ -177,12 +222,11 @@ public class AlgTabu_Clase03_Grupo04
             }
         }
         if (dere < izq) {
-            memoria[dere][izq] = tenencia;
+            memoria[dere][izq] = (sinMejora > numIteraciones * 0.1) ? tenencia / 2 : tenencia; // Reducir tenencia en caso de empeoramiento
         } else {
-            memoria[izq][dere] = tenencia;
+            memoria[izq][dere] = (sinMejora > numIteraciones * 0.1) ? tenencia / 2 : tenencia;
         }
     }
-
 
     private void refreshMemoriaCorto(){
         for (int i = 0; i < memoria.length; i++) {
