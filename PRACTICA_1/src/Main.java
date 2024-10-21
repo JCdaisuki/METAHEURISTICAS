@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class Main{
 
+    //Lista de nombres de los archivos a leer
     static String[] archivosTSP =
     {
         "a280.tsp",
@@ -67,6 +68,8 @@ public class Main{
                 String rutaLog = rutaLogs + "log_" + archivoTSP.replace(".tsp", "") + "_" + currentSeed + ".txt";
                 CreaLogs log = new CreaLogs(rutaLog);
 
+            //Para ejecutar cada algoritmo, emplear la llamada comentada a continuación:
+
                 //Ejecución Greedy
                 //AlgGreedy(greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
 
@@ -74,10 +77,12 @@ public class Main{
                 //AlgBusqLocal(bLocal, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
 
                 //Ejecución Tabú
-                AlgTabu(tabu, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
+                //AlgTabu(tabu, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
 
                 // Cerrar el archivo de log para esta iteración
                 log.cerrarLog();
+
+            //Los resultados de cada ejecución se almacenarán en los archivos log de la carpeta log
             }
         }
     }
