@@ -1,2 +1,0 @@
-Iteración 5 (Seed: 00820622) - Busqueda Local: 1369657,217825
-Tiempo de ejecución: 12101 milisegundos

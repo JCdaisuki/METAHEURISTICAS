@@ -43,4 +43,9 @@ public class Vecino
     {
         return vectorSol;
     }
+
+    public void setVectorSol(int[] sol) {
+        vectorSol = sol;
+        CalcularCosteTotal();
+    }
 }
