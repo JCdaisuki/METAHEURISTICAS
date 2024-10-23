@@ -12,7 +12,7 @@ public class AlgTabu_Clase03_Grupo04
     private int numIteraciones;
     private double estancamiento;
     private double mejorSolucion;
-    double sinMejora;// contador para soluciones sin mejora
+    private int sinMejora;// contador para soluciones sin mejora
     private Vecino mejorGlobal;
     private long semilla;
     private int memoria[][];
