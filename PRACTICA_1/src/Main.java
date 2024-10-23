@@ -52,7 +52,7 @@ public class Main{
             // Instancia de los algoritmos
             AlgGreedy_Clase03_Grupo04 greedy = new AlgGreedy_Clase03_Grupo04();
             AlgBusquedaLocal_Clase03_Grupo04 bLocal = new AlgBusquedaLocal_Clase03_Grupo04(num_iteraciones, tam_entorno, dism_entorno, lector);
-            AlgTabu_Clase03_Grupo04 tabu = new AlgTabu_Clase03_Grupo04(lector,5000,0.5,0.08,0.1,10,10,50);
+            AlgTabu_Clase03_Grupo04 tabu = new AlgTabu_Clase03_Grupo04(lector,5000,0.5,0.08,0.1,10,10);
 
             // Bucle para las iteraciones con diferentes semillas
             String currentSeed = seed;

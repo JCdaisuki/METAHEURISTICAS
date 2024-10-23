@@ -28,7 +28,7 @@ public class AlgTabu_Clase03_Grupo04
 
 
     //constructor tabu
-    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double Estancamiento, double PorcientoTamEntorno, double DisminucionEntorno, int IteCambioEntorno, int Tenencia, double Oscilacion) {
+    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double Estancamiento, double PorcientoTamEntorno, double DisminucionEntorno, int IteCambioEntorno, int Tenencia) {
         this.lector = Lector;
         this.numIteraciones = Maxiteraciones;
         this.estancamiento = Estancamiento;
