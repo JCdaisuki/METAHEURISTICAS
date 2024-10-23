@@ -16,7 +16,6 @@ public class AlgTabu_Clase03_Grupo04
     double sinMejora;// contador para soluciones sin mejora
     private Vecino mejorGlobal;
     private long semilla;
-    private ArrayList<Vecino> listaTabu = new ArrayList<Vecino>();
     private int memoria[][];
     private CreaLogs log;
     private double tamEntorno;
