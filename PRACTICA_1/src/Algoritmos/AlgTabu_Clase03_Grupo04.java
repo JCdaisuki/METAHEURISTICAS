@@ -38,7 +38,6 @@ public class AlgTabu_Clase03_Grupo04
         this.disminucionEntorno = DisminucionEntorno;
         this.iteCambioEntorno = IteCambioEntorno;
         this.tenencia = Tenencia;
-        this.oscilacion = Oscilacion;
         this.iteraciones = new ArrayList<>();
 
 
@@ -259,7 +258,7 @@ public class AlgTabu_Clase03_Grupo04
             }
         }
     }
-    
+
     /**
      * @Brief Actualizacion de la Mermoria a largo plazo, sumando puntuacion en los arcos del vector incluyendo el ultimo con el primero
      * @param mejorLocal
@@ -285,5 +284,3 @@ public class AlgTabu_Clase03_Grupo04
         }
     }
 }
-
-
