@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Auxiliares.Vecino;
-import ProcesadoFicheros.CreaLogs;
 import ProcesadoFicheros.LectorTSP;
 
 public class AlgTabu_Clase03_Grupo04
@@ -17,7 +16,6 @@ public class AlgTabu_Clase03_Grupo04
     private Vecino mejorGlobal;
     private long semilla;
     private int memoria[][];
-    private CreaLogs log;
     private double tamEntorno;
     private double disminucionEntorno;
     private int iteCambioEntorno;
@@ -49,11 +47,6 @@ public class AlgTabu_Clase03_Grupo04
     public void SetSemilla(long semilla)
     {
         this.semilla = semilla;
-    }
-
-    public void SetLog(CreaLogs log)
-    {
-        this.log = log;
     }
 
     /**

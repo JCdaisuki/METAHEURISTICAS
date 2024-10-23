@@ -129,7 +129,6 @@ public class Main{
         long startTime = System.currentTimeMillis();
 
         tabu.SetSemilla(dniNumerico);
-        tabu.SetLog(log);
 
         tabu.ejecutarTabu(greedy.RealizarGreedy(k,dniNumerico,lector));
 
