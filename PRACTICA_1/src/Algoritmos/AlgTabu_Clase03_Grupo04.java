@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Auxiliares.Vecino;
-import ProcesadoFicheros.CreaLogs;
 import ProcesadoFicheros.LectorTSP;
 
 public class AlgTabu_Clase03_Grupo04
@@ -13,23 +12,20 @@ public class AlgTabu_Clase03_Grupo04
     private int numIteraciones;
     private double estancamiento;
     private double mejorSolucion;
-    double sinMejora;// contador para soluciones sin mejora
+    private int sinMejora;// contador para soluciones sin mejora
     private Vecino mejorGlobal;
     private long semilla;
-    private ArrayList<Vecino> listaTabu = new ArrayList<Vecino>();
     private int memoria[][];
-    private CreaLogs log;
     private double tamEntorno;
     private double disminucionEntorno;
     private int iteCambioEntorno;
     private int tenencia;
-    private double oscilacion;
     private ArrayList<Integer> iteraciones;
     private Vecino mejor_momento_actual; // NUEVO: Variable para almacenar la mejor solución en la iteración actual
 
 
     //constructor tabu
-    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double Estancamiento, double PorcientoTamEntorno, double DisminucionEntorno, int IteCambioEntorno, int Tenencia, double Oscilacion) {
+    public AlgTabu_Clase03_Grupo04(LectorTSP Lector, int Maxiteraciones, double Estancamiento, double PorcientoTamEntorno, double DisminucionEntorno, int IteCambioEntorno, int Tenencia) {
         this.lector = Lector;
         this.numIteraciones = Maxiteraciones;
         this.estancamiento = Estancamiento;
@@ -39,7 +35,6 @@ public class AlgTabu_Clase03_Grupo04
         this.disminucionEntorno = DisminucionEntorno;
         this.iteCambioEntorno = IteCambioEntorno;
         this.tenencia = Tenencia;
-        this.oscilacion = Oscilacion;
         this.iteraciones = new ArrayList<>();
 
 
@@ -54,11 +49,6 @@ public class AlgTabu_Clase03_Grupo04
         this.semilla = semilla;
     }
 
-    public void SetLog(CreaLogs log)
-    {
-        this.log = log;
-    }
-
     /**
      * @param vInicial
      * @Brief Ejecutor del Tabu
@@ -70,12 +60,12 @@ public class AlgTabu_Clase03_Grupo04
         mejor_momento_actual = new Vecino(vInicial, lector); // Inicializar mejor_momento_actual
         sinMejora = 0; // Inicializar contador de no mejoras
         int ite = 0;
-        int estancamientoLimite = (int) (numIteraciones * 0.05); // 5% de movimientos de empeoramiento
+        estancamiento = (int) (numIteraciones * 0.05); // 5% de movimientos de empeoramiento
 
         while (numIteraciones > ite)
         {
             // Si el algoritmo se ha estancado, generar una nueva solución aleatoria
-            if (sinMejora >= estancamientoLimite)
+            if (sinMejora >= estancamiento)
             {
                 solAct = generarSolucionGreedy(); // Generar nueva solución inicial
                 mejorLocal.setVectorSol(solAct.get_vector_sol());
@@ -261,8 +251,6 @@ public class AlgTabu_Clase03_Grupo04
         }
     }
 
-
-
     /**
      * @Brief Actualizacion de la Mermoria a largo plazo, sumando puntuacion en los arcos del vector incluyendo el ultimo con el primero
      * @param mejorLocal
@@ -287,72 +275,4 @@ public class AlgTabu_Clase03_Grupo04
             }
         }
     }
-
-
-    /**
-     * @Brief genera un Vecino usando profundidad y anchura en su busqueda
-     * @return Vecino con un vector equilibrado en anchura y profundidad
-     */
-    private Vecino generarEquilibrado() {
-        int numRand;
-        int posAct;
-        int[] nuevoVector = new int[mejorGlobal.get_vector_sol().length];
-
-        // Inicializamos el vector con -1 para evitar valores no deseados
-        for(int i = 0; i < nuevoVector.length; i++) {
-            nuevoVector[i] = -1;
-        }
-
-        // Recorremos el vector solución
-        for (int i = 0; i < mejorGlobal.get_vector_sol().length; i++) {
-            do {
-                // Generamos un número aleatorio entre 0 y 100 para decidir según la oscilación
-                numRand = random.nextInt(100); // 0 - 99
-
-                if (numRand < oscilacion) { // profundidad, desplazamiento dirigido por la memoria a largo plazo
-                    posAct = mejorLargoPlazo(random.nextInt(mejorGlobal.get_vector_sol().length));
-                } else {  // anchura, desplazamiento aleatorizado
-                    posAct = random.nextInt(mejorGlobal.get_vector_sol().length);
-                }
-            } while(contains(nuevoVector, posAct));  // Evitamos posiciones repetidas
-
-            nuevoVector[i] = posAct;  // Rellenamos el vector con la posición seleccionada
-        }
-
-        return new Vecino(nuevoVector, lector);
-    }
-
-    /**
-     * @Brief funcion auxiliar para encontrar el mejor candidato de una fila en desplazamiento en profundidad
-     * @param fila
-     * @return mejor pos
-     */
-    private int mejorLargoPlazo(int fila){
-       int max = 0;
-       int posicion = 0;
-        for (int columna = 0; columna < fila; columna++) {
-            if (memoria[fila][columna] > max) {
-                max = memoria[fila][columna];
-                posicion = columna;
-            }
-        }
-        return posicion;
-    }
-
-    /**
-     * @Brief funcion auxiliar para saber si el vector contiene un numero
-     * @param v
-     * @param num
-     * @return
-     */
-    public boolean contains(int[] v, int num) {
-        for (int i : v) {
-            if (i == num) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
-
-

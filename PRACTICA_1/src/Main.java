@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class Main{
 
+    //Lista de nombres de los archivos a leer
     static String[] archivosTSP =
     {
         "a280.tsp",
@@ -51,7 +52,7 @@ public class Main{
             // Instancia de los algoritmos
             AlgGreedy_Clase03_Grupo04 greedy = new AlgGreedy_Clase03_Grupo04();
             AlgBusquedaLocal_Clase03_Grupo04 bLocal = new AlgBusquedaLocal_Clase03_Grupo04(num_iteraciones, tam_entorno, dism_entorno, lector);
-            AlgTabu_Clase03_Grupo04 tabu = new AlgTabu_Clase03_Grupo04(lector,5000,0.5,0.08,0.1,10,10,50);
+            AlgTabu_Clase03_Grupo04 tabu = new AlgTabu_Clase03_Grupo04(lector,5000,0.5,0.08,0.1,10,10);
 
             // Bucle para las iteraciones con diferentes semillas
             String currentSeed = seed;
@@ -67,6 +68,8 @@ public class Main{
                 String rutaLog = rutaLogs + "log_" + archivoTSP.replace(".tsp", "") + "_" + currentSeed + ".txt";
                 CreaLogs log = new CreaLogs(rutaLog);
 
+            //Para ejecutar cada algoritmo, emplear la llamada comentada a continuación:
+
                 //Ejecución Greedy
                 //AlgGreedy(greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
 
@@ -78,6 +81,8 @@ public class Main{
 
                 // Cerrar el archivo de log para esta iteración
                 log.cerrarLog();
+
+            //Los resultados de cada ejecución se almacenarán en los archivos log de la carpeta log
             }
         }
     }
@@ -124,7 +129,6 @@ public class Main{
         long startTime = System.currentTimeMillis();
 
         tabu.SetSemilla(dniNumerico);
-        tabu.SetLog(log);
 
         tabu.ejecutarTabu(greedy.RealizarGreedy(k,dniNumerico,lector));
 
