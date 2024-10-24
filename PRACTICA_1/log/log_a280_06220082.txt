@@ -13,3 +13,8 @@ Tiempo de ejecución: 4976 milisegundos
 
 
 
+Ejecucion 1 a280.tsp(Seed: 06220082) - Busqueda Tabu: 1307,085764
+Tiempo de ejecución: 4616 milisegundos
+
+
+

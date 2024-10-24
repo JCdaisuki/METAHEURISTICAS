@@ -64,7 +64,7 @@ public class Main
                 //AlgBusqLocal(archivosTSP, bLocal, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
 
                 //Ejecución Tabú
-                AlgTabu(archivosTSP, tabu, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
+                //AlgTabu(archivosTSP, tabu, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
 
                 // Cerrar el archivo de log para esta iteración
                 log.cerrarLog();
