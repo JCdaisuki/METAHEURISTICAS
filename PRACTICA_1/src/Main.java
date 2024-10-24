@@ -1,43 +1,30 @@
 import Algoritmos.AlgTabu_Clase03_Grupo04;
 import ProcesadoFicheros.LectorTSP;
 import ProcesadoFicheros.CreaLogs;
+import ProcesadoFicheros.LeerConfig;
 import Algoritmos.AlgGreedy_Clase03_Grupo04;
 import Algoritmos.AlgBusquedaLocal_Clase03_Grupo04;
 import java.util.Random;
 
-public class Main{
-
-    //Lista de nombres de los archivos a leer
-    static String[] archivosTSP =
-    {
-        "a280.tsp",
-        "ch130.tsp",
-        "d18512.tsp",
-        "pr144.tsp",
-        "u1060.tsp"
-    };
-
+public class Main
+{
     public static void main(String[] args)
     {
-        // Ruta base para los archivos .tsp
-        String rutaBase = "..\\PRACTICA_1\\";
+        // Leer configuración desde el archivo config.txt
+        LeerConfig.leerConfiguracion("config.txt");
 
-        // Ruta para la carpeta de logs
-        String rutaLogs = rutaBase + "log\\";
-
-        // DNI base
-        String seed = "20622008";
-        int nIteraciones = 5;
-        int k = 5;
-
-        //Configuracion Busqueda local
-        int num_iteraciones = 5000;
-        double tam_entorno = 0.08;
-        double dism_entorno = 0.1;
-
-        //Configuracion Tabu
-        int maxite = 1000;
-        double empeoramientoPermitido = 0.08;
+        // Ahora puedes usar las variables de configuración, por ejemplo:
+        String[] archivosTSP = LeerConfig.archivosTSP;
+        String rutaBase = LeerConfig.rutaBase;
+        String rutaLogs = LeerConfig.rutaLogs;
+        String seed = LeerConfig.seed;
+        int nIteraciones = LeerConfig.nIteraciones;
+        int k = LeerConfig.k;
+        int num_iteraciones = LeerConfig.num_iteraciones;
+        double tam_entorno = LeerConfig.tam_entorno;
+        double dism_entorno = LeerConfig.dism_entorno;
+        int maxite = LeerConfig.maxite;
+        double empeoramientoPermitido = LeerConfig.empeoramientoPermitido;
 
         // Bucle para cada archivo .tsp
         for (int i = 0; i < archivosTSP.length; i++)
@@ -67,17 +54,18 @@ public class Main{
                 // Nombre del archivo de log basado en el archivo .tsp y la semilla ( creacion del txt incluida )
                 String rutaLog = rutaLogs + "log_" + archivoTSP.replace(".tsp", "") + "_" + currentSeed + ".txt";
                 CreaLogs log = new CreaLogs(rutaLog);
+                CreaLogs log = new CreaLogs(rutaLog);
 
             //Para ejecutar cada algoritmo, emplear la llamada comentada a continuación:
 
                 //Ejecución Greedy
-                //AlgGreedy(greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
+                //AlgGreedy(archivosTSP, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
 
                 //Ejecución Búsqueda Local
-                //AlgBusqLocal(bLocal, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
+                //AlgBusqLocal(archivosTSP, bLocal, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
 
                 //Ejecución Tabú
-                AlgTabu(tabu, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
+                AlgTabu(archivosTSP, tabu, greedy, k, dniNumerico, lector, ite, i, currentSeed, log);
 
                 // Cerrar el archivo de log para esta iteración
                 log.cerrarLog();
@@ -99,7 +87,7 @@ public class Main{
         log.escribirMejoresLocales();
     }
 
-    static void AlgGreedy(AlgGreedy_Clase03_Grupo04 greedy, int k, long dniNumerico, LectorTSP lector, int ite, int i, String currentSeed, CreaLogs log)
+    static void AlgGreedy(String[] archivosTSP, AlgGreedy_Clase03_Grupo04 greedy, int k, long dniNumerico, LectorTSP lector, int ite, int i, String currentSeed, CreaLogs log)
     {
         long startTime = System.currentTimeMillis();
 
@@ -111,7 +99,7 @@ public class Main{
         logAndPrint(log, mensaje,"Tiempo de ejecución: " + duracion + " milisegundos");
     }
 
-    static private void AlgBusqLocal(AlgBusquedaLocal_Clase03_Grupo04 bLocal, AlgGreedy_Clase03_Grupo04 greedy, int k, long dniNumerico, LectorTSP lector, int ite, int i, String currentSeed, CreaLogs log)
+    static private void AlgBusqLocal(String[] archivosTSP, AlgBusquedaLocal_Clase03_Grupo04 bLocal, AlgGreedy_Clase03_Grupo04 greedy, int k, long dniNumerico, LectorTSP lector, int ite, int i, String currentSeed, CreaLogs log)
     {
         long startTime = System.currentTimeMillis();
 
@@ -124,7 +112,7 @@ public class Main{
         logAndPrint(log, mensaje,"Tiempo de ejecución: " + duracion + " milisegundos");
     }
 
-    static private void AlgTabu(AlgTabu_Clase03_Grupo04 tabu, AlgGreedy_Clase03_Grupo04 greedy, int k, long dniNumerico, LectorTSP lector, int ite, int i, String currentSeed, CreaLogs log)
+    static private void AlgTabu(String[] archivosTSP, AlgTabu_Clase03_Grupo04 tabu, AlgGreedy_Clase03_Grupo04 greedy, int k, long dniNumerico, LectorTSP lector, int ite, int i, String currentSeed, CreaLogs log)
     {
         long startTime = System.currentTimeMillis();
 

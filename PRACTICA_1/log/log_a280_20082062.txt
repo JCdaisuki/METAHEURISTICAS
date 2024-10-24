@@ -3,3 +3,13 @@ Tiempo de ejecución: 229 milisegundos
 
 
 
+Ejecucion 4 a280.tsp(Seed: 20082062) - Busqueda Tabu: 1348,846757
+Tiempo de ejecución: 107 milisegundos
+
+
+
+Ejecucion 4 a280.tsp(Seed: 20082062) - Busqueda Tabu: 1348,846757
+Tiempo de ejecución: 110 milisegundos
+
+
+

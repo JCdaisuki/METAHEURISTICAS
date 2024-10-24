@@ -1,0 +1,10 @@
+Ejecucion 5 ch130.tsp(Seed: 00820622) - Busqueda Tabu: 7283,025591
+Tiempo de ejecución: 31 milisegundos
+
+
+
+Ejecucion 5 ch130.tsp(Seed: 00820622) - Busqueda Tabu: 7283,025591
+Tiempo de ejecución: 32 milisegundos
+
+
+
