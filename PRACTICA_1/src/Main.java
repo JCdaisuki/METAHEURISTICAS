@@ -54,7 +54,6 @@ public class Main
                 // Nombre del archivo de log basado en el archivo .tsp y la semilla ( creacion del txt incluida )
                 String rutaLog = rutaLogs + "log_" + archivoTSP.replace(".tsp", "") + "_" + currentSeed + ".txt";
                 CreaLogs log = new CreaLogs(rutaLog);
-                CreaLogs log = new CreaLogs(rutaLog);
 
             //Para ejecutar cada algoritmo, emplear la llamada comentada a continuación:
 
