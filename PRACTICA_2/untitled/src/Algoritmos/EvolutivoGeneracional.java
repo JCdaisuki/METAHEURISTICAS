@@ -213,7 +213,7 @@ public class EvolutivoGeneracional {
                 do{
                     movimientoAux++;
                     indice = v2[movimientoAux];
-                }while(noCopiar.contains(indice) || newVector.contains(indice))
+                }while(noCopiar.contains(indice) || newVector.contains(indice));
             }
         }
         hijo.setVectorSol(newVector);
