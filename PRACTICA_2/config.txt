@@ -20,3 +20,12 @@ String seed = "20622008";
 int nIteraciones = 3;
 
 // Configuración Generacional
+int tamPoblacion = 100; 
+double porcientoGeneracion = 0.8; 
+int tamCandidatosGreedy = 5; 
+int cantidadElites = 1;
+int kBest = 2; 
+double probCruce = 0.7;
+double prob2opt = 0.1; 
+int maxEvaluaciones = 50000;
+long maxTiempo = 60000;
