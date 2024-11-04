@@ -1,0 +1,22 @@
+// Lista de nombres de los archivos a leer
+static String[] archivosTSP = {
+    "a280.tsp",
+    "ch130.tsp",
+    "d18512.tsp",
+    "pr144.tsp",
+    "u1060.tsp"
+};
+
+// Ruta base para los archivos .tsp
+String rutaBase = "..\\PRACTICA_2\\";
+
+// Ruta para la carpeta de logs
+String rutaLogs = "..\\PRACTICA_2\\log\\";
+
+// DNI base
+String seed = "20622008";
+
+// Configuración general
+int nIteraciones = 3;
+
+// Configuración Generacional

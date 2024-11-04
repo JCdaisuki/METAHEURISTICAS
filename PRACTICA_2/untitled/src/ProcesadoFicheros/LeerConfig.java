@@ -20,11 +20,15 @@ public class LeerConfig
     public static int maxite;
     public static double empeoramientoPermitido;
 
-    public static void leerConfiguracion(String rutaConfig) {
-        try (BufferedReader br = new BufferedReader(new FileReader(rutaConfig))) {
+    public static void leerConfiguracion(String rutaConfig)
+    {
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaConfig)))
+        {
             List<String> archivosList = new ArrayList<>();
             String line;
-            while ((line = br.readLine()) != null) {
+
+            while ((line = br.readLine()) != null)
+            {
                 line = line.trim();
                 if (line.startsWith("static String[] archivosTSP")) {
                     // Leer la lista de archivos TSP
