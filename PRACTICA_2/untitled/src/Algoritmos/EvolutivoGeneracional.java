@@ -15,7 +15,7 @@ public class EvolutivoGeneracional
     private int kworst;
     private double probCruce;
     private double prob2opt;
-    private int maxComprobacion;
+    private int maxEvaluaciones;
     private double maxTiempo;
     private Random random;
     private LectorTSP lector;
@@ -23,6 +23,7 @@ public class EvolutivoGeneracional
     private int cantidadElite;
     private ArrayList<Individuo> elites;
     private long semilla;
+    private int evaluaciones;
 
     public EvolutivoGeneracional(int tamPoblacion, double porcientoGeneracion, int tamCandidatosGreedy, int cantidadElites,
                                  int kbest, int kworst, double probCruce, double prob2opt, int maxEvaluacion, double maxTiempo,
@@ -35,7 +36,7 @@ public class EvolutivoGeneracional
         this.kworst = kworst;
         this.probCruce = probCruce;
         this.prob2opt = prob2opt;
-        this.maxComprobacion = maxEvaluacion;
+        this.maxEvaluaciones = maxEvaluacion;
         this.maxTiempo = maxTiempo;
         this.semilla = seed;
         this.lector = lector;
@@ -44,28 +45,58 @@ public class EvolutivoGeneracional
         this.generacionActual = new ArrayList<>();
         this.elites = new ArrayList<>();
         excepcionesInicializacion();
+
+
     }
 
     public void ejecutarGeneracional()
     {
         long tiempoInicio = System.currentTimeMillis();
-        int comprobaciones = 0;
+        evaluaciones = 0;
         inicializacion();
-        seleccionarElites();
-
-        while ((System.currentTimeMillis() - tiempoInicio) / 1000.0 < maxTiempo && comprobaciones < maxComprobacion)
+            //TODO hacer que no se evalue a elementos previamente evaluados ?  no estoy seguro de ello
+            //REMEMBER cuando hacemos una evaluacion de individuo tenemos que hacer evaluaciones++,
+        // solo se evalua nuevos individuos, hay que comprobar no revisar doblemente al individuo
+        while ((System.currentTimeMillis() - tiempoInicio) / 1000.0 < maxTiempo && evaluaciones < maxEvaluaciones)
         {
+            seleccionarElites();
+
             ArrayList<Individuo> postTorneo = seleccionTorneoGeneralizado();
             ArrayList<Individuo> hijos = cruce(postTorneo);
 
-            generacionActual.clear();
-            generacionActual.addAll(hijos);
-
-            seleccionarElites();
+            remplazamiento(hijos);
             dosOpt();
-
-            comprobaciones++;
         }
+    }
+
+    private void remplazamiento(ArrayList<Individuo> hijos ){
+        generacionActual.clear();
+        generacionActual.addAll(hijos);
+        ArrayList<Individuo> elitesPermanecen = new ArrayList<>();
+        for(int i = 0; i < cantidadElite ; i++){
+            if(!generacionActual.contains(elites.get(i))){
+                elitesPermanecen.add(elites.get(i));
+            }
+        }
+        torneokworst(elitesPermanecen);
+    }
+
+    private void torneokworst(ArrayList<Individuo> permanecen){
+        double peor;
+
+        for(int i =0; i<permanecen.size() ; i++){
+            peor = Double.MIN_VALUE;
+            for (int j = 0;j < kbest; j++) {
+                int r = random.nextInt(0, tamPoblacion);
+                evaluaciones++;
+                if (peor < generacionActual.get(j).getCosteTotal()) {
+                    peor = generacionActual.get(j).getCosteTotal();
+
+                }
+            }
+            generacionActual.get(i).setVectorSol(permanecen.get(i).get_vector_sol());
+        }
+
     }
 
     private int[] generacionAleatoria()
@@ -98,11 +129,11 @@ public class EvolutivoGeneracional
             double probAleatoria = random.nextDouble();
             Individuo nuevoIndividuo = new Individuo(lector);
 
-            if (probAleatoria < porcientoGeneracion)
+            if (probAleatoria < porcientoGeneracion)   //diversificacion
             {
                 nuevoIndividuo.setVectorSol(generacionAleatoria());
             }
-            else
+            else    // intensificacion
             {
                 GreedyAleatorizado greedy = new GreedyAleatorizado();
                 nuevoIndividuo = greedy.RealizarGreedy(tamCandidatosGreedy, semilla, lector);
@@ -138,7 +169,7 @@ public class EvolutivoGeneracional
 
     private void seleccionarElites()
     {
-        generacionActual.sort((ind1, ind2) -> Double.compare(ind1.GetCosteTotal(), ind2.GetCosteTotal()));
+        generacionActual.sort((ind1, ind2) -> Double.compare(ind1.getCosteTotal(), ind2.getCosteTotal()));
         elites.clear();
 
         for (int i = 0; i < cantidadElite && i < generacionActual.size(); i++)
@@ -165,9 +196,10 @@ public class EvolutivoGeneracional
 
             for (Individuo indi : torneo)
             {
-                if (indi.GetCosteTotal() < mejorIndividuo.GetCosteTotal())
+                if (indi.getCosteTotal() < mejorIndividuo.getCosteTotal())
                 {
                     mejorIndividuo = indi;
+                    evaluaciones++;
                 }
             }
             nuevaPoblacion.add(mejorIndividuo);
@@ -248,6 +280,7 @@ public class EvolutivoGeneracional
         }
 
         hijo.setVectorSol(newVector.stream().mapToInt(Integer::intValue).toArray());
+
         return hijo;
     }
 
@@ -332,7 +365,7 @@ public class EvolutivoGeneracional
             throw new IllegalArgumentException("Error: La probabilidad de mutación 2-opt debe estar entre 0 y 1.");
         }
 
-        if (maxComprobacion <= 0)
+        if (maxEvaluaciones <= 0)
         {
             throw new IllegalArgumentException("Error: El máximo de comprobaciones debe ser mayor que 0.");
         }

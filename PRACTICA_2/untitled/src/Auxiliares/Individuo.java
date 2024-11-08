@@ -42,7 +42,7 @@ public class Individuo {
         costeTotal = posible_nuevo_coste;
     }
 
-    public double GetCosteTotal() {
+    public double getCosteTotal() {
         return costeTotal;
     }
 
