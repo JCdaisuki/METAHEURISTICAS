@@ -18,3 +18,8 @@ Tiempo de ejecución: 105 milisegundos
 
 
 
+Ejecucion 3 a280.tsp(Seed: 22008206) - Greedy: 4175,991460
+Tiempo de ejecución: 0 milisegundos
+
+
+

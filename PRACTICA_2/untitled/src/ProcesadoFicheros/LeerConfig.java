@@ -18,6 +18,7 @@ public class LeerConfig
     public static int tamCandidatosGreedy;
     public static int cantidadElites;
     public static int kBest;
+    public static int kWorst;
     public static double probCruce;
     public static double prob2opt;
     public static int maxEvaluaciones;
@@ -63,6 +64,8 @@ public class LeerConfig
                     cantidadElites = Integer.parseInt(line.split("=")[1].trim().replace(";", ""));
                 } else if (line.startsWith("int kBest")) {
                     kBest = Integer.parseInt(line.split("=")[1].trim().replace(";", ""));
+                } else if (line.startsWith("int kWorst")) {
+                    kWorst = Integer.parseInt(line.split("=")[1].trim().replace(";", ""));
                 } else if (line.startsWith("double probCruce")) {
                     probCruce = Double.parseDouble(line.split("=")[1].trim().replace(";", ""));
                 } else if (line.startsWith("double prob2opt")) {

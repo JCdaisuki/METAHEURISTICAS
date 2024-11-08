@@ -237,17 +237,9 @@ public class AlgTabu_Clase03_Grupo04
      */
     private boolean checkMemoriaCorto(int p1, int p2) {
         if (p1 > p2) {
-            if (memoria[p2][p1] > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return memoria[p2][p1] > 0;
         } else {
-            if (memoria[p1][p2] > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return memoria[p1][p2] > 0;
         }
     }
 

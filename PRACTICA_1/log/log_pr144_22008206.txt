@@ -1,0 +1,5 @@
+Ejecucion 3 pr144.tsp(Seed: 22008206) - Greedy: 660939,066969
+Tiempo de ejecución: 0 milisegundos
+
+
+

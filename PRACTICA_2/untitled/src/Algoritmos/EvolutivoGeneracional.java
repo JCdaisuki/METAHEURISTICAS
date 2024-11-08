@@ -25,7 +25,7 @@ public class EvolutivoGeneracional
     private long semilla;
 
     public EvolutivoGeneracional(int tamPoblacion, double porcientoGeneracion, int tamCandidatosGreedy, int cantidadElites,
-                                 int kbest, int kworst, double probCruce, double prob2opt, int maxComprobacion, double maxTiempo,
+                                 int kbest, int kworst, double probCruce, double prob2opt, int maxEvaluacion, double maxTiempo,
                                  long seed, LectorTSP lector)
     {
         this.tamPoblacion = tamPoblacion;
@@ -35,7 +35,7 @@ public class EvolutivoGeneracional
         this.kworst = kworst;
         this.probCruce = probCruce;
         this.prob2opt = prob2opt;
-        this.maxComprobacion = maxComprobacion;
+        this.maxComprobacion = maxEvaluacion;
         this.maxTiempo = maxTiempo;
         this.semilla = seed;
         this.lector = lector;

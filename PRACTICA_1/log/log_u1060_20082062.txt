@@ -1,0 +1,5 @@
+Ejecucion 4 u1060.tsp(Seed: 20082062) - Greedy: 5654683,206116
+Tiempo de ejecución: 0 milisegundos
+
+
+

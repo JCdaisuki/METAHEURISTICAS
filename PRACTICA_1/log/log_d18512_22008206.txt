@@ -1,0 +1,5 @@
+Ejecucion 3 d18512.tsp(Seed: 22008206) - Greedy: 45912888,289488
+Tiempo de ejecución: 301 milisegundos
+
+
+

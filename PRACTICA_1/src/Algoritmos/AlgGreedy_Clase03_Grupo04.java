@@ -56,7 +56,7 @@ public class AlgGreedy_Clase03_Grupo04
         // Suma de la distancia para volver al inicio
         distTotal += lector.getDistancias()[indice_ini][indice];
 
-        // Convertir la lista de índices a un arreglo y devolverlo
+        // Convertir la lista de índices a un array y devolverlo
         int[] resultado = new int[solucion.size()];
 
         for (int i = 0; i < solucion.size(); i++)

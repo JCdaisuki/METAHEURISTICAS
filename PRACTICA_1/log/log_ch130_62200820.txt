@@ -8,3 +8,8 @@ Tiempo de ejecución: 31 milisegundos
 
 
 
+Ejecucion 2 ch130.tsp(Seed: 62200820) - Greedy: 43770,042994
+Tiempo de ejecución: 0 milisegundos
+
+
+
