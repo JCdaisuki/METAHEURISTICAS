@@ -1,4 +1,4 @@
-import Algoritmos.EvolutivoGeneracional;
+import Algoritmos.AlgEvolutivoGeneracional_Clase03_Grupo04;
 import ProcesadoFicheros.CreaLogs;
 import ProcesadoFicheros.LectorTSP;
 import ProcesadoFicheros.LeerConfig;
@@ -22,6 +22,10 @@ public class Main
             LectorTSP lector = new LectorTSP(rutaArchivo);
 
             String currentSeed = seed;
+
+            AlgEvolutivoGeneracional_Clase03_Grupo04 generacional = new AlgEvolutivoGeneracional_Clase03_Grupo04(LeerConfig.tamPoblacion, LeerConfig.porcientoGeneracion, LeerConfig.tamCandidatosGreedy, LeerConfig.cantidadElites
+                    , LeerConfig.kBest, LeerConfig.kWorst, LeerConfig.probCruce, LeerConfig.prob2opt, LeerConfig.maxEvaluaciones, LeerConfig.maxTiempo);
+
             for (int ite = 0; ite < LeerConfig.nIteraciones; ite++)
             {
                 // Desplazar el primer dígito al final
@@ -33,18 +37,33 @@ public class Main
                 CreaLogs log = new CreaLogs(rutaLog);
 
                 //Ejecución Evolutivo Generacional
-                //ejecutarEvolutivoGeneracional(dniNumerico, lector);
+                ejecutarEvolutivoGeneracional(generacional, dniNumerico, lector, ite, archivoTSP, log);
 
                 log.cerrarLog();
             }
         }
     }
 
-    private static void ejecutarEvolutivoGeneracional(long seed, LectorTSP lector)
+    public static void logAndPrint(CreaLogs log, String mensaje, String mensaje2)
     {
-        EvolutivoGeneracional generacional = new EvolutivoGeneracional(LeerConfig.tamPoblacion, LeerConfig.porcientoGeneracion, LeerConfig.tamCandidatosGreedy, LeerConfig.cantidadElites
-                , LeerConfig.kBest, LeerConfig.kWorst, LeerConfig.probCruce, LeerConfig.prob2opt, LeerConfig.maxEvaluaciones, LeerConfig.maxTiempo, seed, lector);
+        //Mostrar en consola
+        System.out.println(mensaje);
 
-        generacional.ejecutarGeneracional();
+        //Escribir en el archivo de log
+        log.escribirLog(mensaje);
+        log.escribirLog(mensaje2);
+        log.escribirMejoresLocales();
+    }
+
+    private static void ejecutarEvolutivoGeneracional(AlgEvolutivoGeneracional_Clase03_Grupo04 generacional, long seed, LectorTSP lector, int ite, String archivo, CreaLogs log)
+    {
+        long startTime = System.currentTimeMillis();
+
+        generacional.ejecutarGeneracional(seed, lector);
+
+        String mensaje = String.format("Ejecucion %d(Seed: %s) - Evolutivo Generacional: %f", ite + 1, seed, generacional.getMejorCoste());
+        long endTime = System.currentTimeMillis();
+        long duracion = endTime - startTime;
+        logAndPrint(log, mensaje,"Tiempo de ejecución: " + duracion + " milisegundos");
     }
 }
