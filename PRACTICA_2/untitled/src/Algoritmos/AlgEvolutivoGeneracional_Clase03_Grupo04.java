@@ -85,7 +85,7 @@ public class AlgEvolutivoGeneracional_Clase03_Grupo04
     private void torneokworst(ArrayList<Individuo> permanecen)
     {
         double peor;
-
+        int posPeor = 0;
         for(int i =0; i<permanecen.size() ; i++)
         {
             peor = Double.MIN_VALUE;
@@ -94,13 +94,14 @@ public class AlgEvolutivoGeneracional_Clase03_Grupo04
                 int r = random.nextInt(0, tamPoblacion);
                 evaluaciones++;
 
-                if (peor < generacionActual.get(j).getCosteTotal())
+                if (peor < generacionActual.get(r).getCosteTotal())
                 {
-                    peor = generacionActual.get(j).getCosteTotal();
+                    peor = generacionActual.get(r).getCosteTotal();
+                    posPeor = r;
 
                 }
             }
-            generacionActual.get(i).setVectorSol(permanecen.get(i).get_vector_sol());
+            generacionActual.get(posPeor).setVectorSol(permanecen.get(i).get_vector_sol());
         }
 
     }
@@ -284,7 +285,7 @@ public class AlgEvolutivoGeneracional_Clase03_Grupo04
                 newVector.add(indice);
             }
         }
-
+        //metodo para cambiar de Array a int[]
         hijo.setVectorSol(newVector.stream().mapToInt(Integer::intValue).toArray());
 
         return hijo;
