@@ -42,7 +42,7 @@ public class AlgEvolutivoEstacionario_Clase03_Grupo04 {
         excepcionesInicializacion();
     }
 
-    public void ejecutarEstacional(long seed, LectorTSP lector)
+    public void ejecutarEstacionario(long seed, LectorTSP lector)
     {
         this.semilla = seed;
         this.random = new Random(seed);
@@ -170,7 +170,7 @@ public class AlgEvolutivoEstacionario_Clase03_Grupo04 {
         ArrayList<Individuo> ganadores = new ArrayList<>();
 
             ArrayList<Individuo> torneo = new ArrayList<>();
-            for(int i  = 0 ; i< kworst ; i++)
+            for(int i  = 0 ; i< 2 ; i++)
             {
                 for (int j = 0; j < kbest; j++)
                 {

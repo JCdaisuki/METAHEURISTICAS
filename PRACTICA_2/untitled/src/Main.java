@@ -40,7 +40,10 @@ public class Main
                 CreaLogs log = new CreaLogs(rutaLog);
 
                 //Ejecución Evolutivo Generacional
-                ejecutarEvolutivoGeneracional(generacional, dniNumerico, lector, ite, archivoTSP, log);
+                //ejecutarEvolutivoGeneracional(generacional, dniNumerico, lector, ite, log);
+
+                //Ejecución Evolutivo Estacionario
+                ejecutarEvolutivoGeneracional(generacional, dniNumerico, lector, ite, log);
 
                 log.cerrarLog();
             }
@@ -57,7 +60,7 @@ public class Main
         log.escribirLog(mensaje2);
     }
 
-    private static void ejecutarEvolutivoGeneracional(AlgEvolutivoGeneracional_Clase03_Grupo04 generacional, long seed, LectorTSP lector, int ite, String archivo, CreaLogs log)
+    private static void ejecutarEvolutivoGeneracional(AlgEvolutivoGeneracional_Clase03_Grupo04 generacional, long seed, LectorTSP lector, int ite, CreaLogs log)
     {
         long startTime = System.currentTimeMillis();
 
@@ -69,13 +72,13 @@ public class Main
         logAndPrint(log, mensaje,"Tiempo de ejecución: " + duracion + " milisegundos");
     }
 
-    private static void ejecutarEvolutivoEstacionario(AlgEvolutivoGeneracional_Clase03_Grupo04 generacional, long seed, LectorTSP lector, int ite, String archivo, CreaLogs log)
+    private static void ejecutarEvolutivoEstacionario(AlgEvolutivoEstacionario_Clase03_Grupo04 estacionario, long seed, LectorTSP lector, int ite, CreaLogs log)
     {
         long startTime = System.currentTimeMillis();
 
-        generacional.ejecutarGeneracional(seed, lector);
+        estacionario.ejecutarEstacionario(seed, lector);
 
-        String mensaje = String.format("Ejecucion %d(Seed: %s) - Evolutivo Generacional: %f", ite + 1, seed, generacional.getMejorCoste());
+        String mensaje = String.format("Ejecucion %d(Seed: %s) - Evolutivo Generacional: %f", ite + 1, seed, estacionario.getMejorCoste());
         long endTime = System.currentTimeMillis();
         long duracion = endTime - startTime;
         logAndPrint(log, mensaje,"Tiempo de ejecución: " + duracion + " milisegundos");
