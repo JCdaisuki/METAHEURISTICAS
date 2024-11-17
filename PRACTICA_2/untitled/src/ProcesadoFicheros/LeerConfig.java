@@ -23,6 +23,7 @@ public class LeerConfig
     public static double prob2opt;
     public static int maxEvaluaciones;
     public static long maxTiempo;
+    public static String tipoCruce;
 
     public static void leerConfiguracion(String rutaConfig)
     {
@@ -74,6 +75,8 @@ public class LeerConfig
                     maxEvaluaciones = Integer.parseInt(line.split("=")[1].trim().replace(";", ""));
                 } else if (line.startsWith("long maxTiempo")) {
                     maxTiempo = Long.parseLong(line.split("=")[1].trim().replace(";", ""));
+                }else if (line.startsWith("String tipoCruce")) {
+                    tipoCruce = (line.split("=")[1].trim().replace(";", ""));
                 }
             }
         }

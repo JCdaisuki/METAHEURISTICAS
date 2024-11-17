@@ -25,7 +25,7 @@ public class AlgEvolutivoEstacionario_Clase03_Grupo04 {
     private int evaluaciones;
     private String tipoCruce;
 
-    public AlgEvolutivoEstacionario_Clase03_Grupo04(int tamPoblacion, double porcientoGeneracion, int tamCandidatosGreedy, int cantidadElites,
+    public AlgEvolutivoEstacionario_Clase03_Grupo04(int tamPoblacion, double porcientoGeneracion, int tamCandidatosGreedy,
                                                     int kbest, int kworst, double probCruce, double prob2opt, int maxEvaluacion, double maxTiempo,String TipoCruce)
     {
         this.tamPoblacion = tamPoblacion;
@@ -170,8 +170,8 @@ public class AlgEvolutivoEstacionario_Clase03_Grupo04 {
         ArrayList<Individuo> ganadores = new ArrayList<>();
 
             ArrayList<Individuo> torneo = new ArrayList<>();
-            for(int i  = 0 ; i< 2 ; i++){
-
+            for(int i  = 0 ; i< kworst ; i++)
+            {
                 for (int j = 0; j < kbest; j++)
                 {
                     int indiceAleatorio = random.nextInt(generacionActual.size());

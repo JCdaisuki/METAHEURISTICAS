@@ -38,17 +38,5 @@ public class CreaLogs {
             e.printStackTrace();
         }
     }
-
-    public void escribirMejoresLocales() {
-        try {
-            escritor.write("\n" + "\n" + "\n");
-            for (String mejorLocal : mejoresLocales) {
-                escritor.write(mejorLocal + "\n"); // Escribir cada string en una nueva línea
-            }
-            escritor.flush(); // Asegurar que se escribe inmediatamente
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
 

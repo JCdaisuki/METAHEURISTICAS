@@ -1,3 +1,4 @@
+import Algoritmos.AlgEvolutivoEstacionario_Clase03_Grupo04;
 import Algoritmos.AlgEvolutivoGeneracional_Clase03_Grupo04;
 import ProcesadoFicheros.CreaLogs;
 import ProcesadoFicheros.LectorTSP;
@@ -24,7 +25,9 @@ public class Main
             String currentSeed = seed;
 
             AlgEvolutivoGeneracional_Clase03_Grupo04 generacional = new AlgEvolutivoGeneracional_Clase03_Grupo04(LeerConfig.tamPoblacion, LeerConfig.porcientoGeneracion, LeerConfig.tamCandidatosGreedy, LeerConfig.cantidadElites
-                    , LeerConfig.kBest, LeerConfig.kWorst, LeerConfig.probCruce, LeerConfig.prob2opt, LeerConfig.maxEvaluaciones, LeerConfig.maxTiempo);
+                    , LeerConfig.kBest, LeerConfig.kWorst, LeerConfig.probCruce, LeerConfig.prob2opt, LeerConfig.maxEvaluaciones, LeerConfig.maxTiempo, LeerConfig.tipoCruce);
+
+            AlgEvolutivoEstacionario_Clase03_Grupo04 estacionario = new AlgEvolutivoEstacionario_Clase03_Grupo04(LeerConfig.tamPoblacion, LeerConfig.porcientoGeneracion, LeerConfig.tamCandidatosGreedy, LeerConfig.kBest, LeerConfig.kWorst, LeerConfig.probCruce, LeerConfig.prob2opt, LeerConfig.maxEvaluaciones, LeerConfig.maxTiempo, LeerConfig.tipoCruce);
 
             for (int ite = 0; ite < LeerConfig.nIteraciones; ite++)
             {
@@ -52,10 +55,21 @@ public class Main
         //Escribir en el archivo de log
         log.escribirLog(mensaje);
         log.escribirLog(mensaje2);
-        log.escribirMejoresLocales();
     }
 
     private static void ejecutarEvolutivoGeneracional(AlgEvolutivoGeneracional_Clase03_Grupo04 generacional, long seed, LectorTSP lector, int ite, String archivo, CreaLogs log)
+    {
+        long startTime = System.currentTimeMillis();
+
+        generacional.ejecutarGeneracional(seed, lector);
+
+        String mensaje = String.format("Ejecucion %d(Seed: %s) - Evolutivo Generacional: %f", ite + 1, seed, generacional.getMejorCoste());
+        long endTime = System.currentTimeMillis();
+        long duracion = endTime - startTime;
+        logAndPrint(log, mensaje,"Tiempo de ejecución: " + duracion + " milisegundos");
+    }
+
+    private static void ejecutarEvolutivoEstacionario(AlgEvolutivoGeneracional_Clase03_Grupo04 generacional, long seed, LectorTSP lector, int ite, String archivo, CreaLogs log)
     {
         long startTime = System.currentTimeMillis();
 

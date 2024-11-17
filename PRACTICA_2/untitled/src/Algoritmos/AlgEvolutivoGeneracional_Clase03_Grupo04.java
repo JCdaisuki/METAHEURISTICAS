@@ -24,9 +24,10 @@ public class AlgEvolutivoGeneracional_Clase03_Grupo04
     private ArrayList<Individuo> elites;
     private long semilla;
     private int evaluaciones;
+    private String tipoCruce;
 
     public AlgEvolutivoGeneracional_Clase03_Grupo04(int tamPoblacion, double porcientoGeneracion, int tamCandidatosGreedy, int cantidadElites,
-                                                    int kbest, int kworst, double probCruce, double prob2opt, int maxEvaluacion, double maxTiempo)
+                                                    int kbest, int kworst, double probCruce, double prob2opt, int maxEvaluacion, double maxTiempo, String tipoCruce)
     {
         this.tamPoblacion = tamPoblacion;
         this.porcientoGeneracion = porcientoGeneracion;
@@ -40,6 +41,7 @@ public class AlgEvolutivoGeneracional_Clase03_Grupo04
         this.cantidadElite = cantidadElites;
         this.generacionActual = new ArrayList<>();
         this.elites = new ArrayList<>();
+        this.tipoCruce = tipoCruce;
         excepcionesInicializacion();
     }
 
@@ -147,6 +149,12 @@ public class AlgEvolutivoGeneracional_Clase03_Grupo04
             }
 
             generacionActual.add(nuevoIndividuo);
+        }
+
+        
+        if(tipoCruce == "MOC")
+        {
+            probCruce = 1 - probCruce;
         }
     }
 
