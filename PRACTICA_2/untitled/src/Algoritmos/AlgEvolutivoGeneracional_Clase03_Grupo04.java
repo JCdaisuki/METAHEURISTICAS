@@ -59,9 +59,9 @@ public class AlgEvolutivoGeneracional_Clase03_Grupo04
 
             ArrayList<Individuo> postTorneo = seleccionTorneoGeneralizado();
             ArrayList<Individuo> hijos = cruce(postTorneo);
-
-            remplazamiento(hijos);
             dosOpt();
+            remplazamiento(hijos);
+
         }
     }
 

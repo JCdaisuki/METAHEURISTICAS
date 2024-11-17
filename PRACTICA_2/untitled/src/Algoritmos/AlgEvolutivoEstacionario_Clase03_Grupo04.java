@@ -21,8 +21,6 @@ public class AlgEvolutivoEstacionario_Clase03_Grupo04 {
     private Random random;
     private LectorTSP lector;
     private ArrayList<Individuo> generacionActual;
-    private int cantidadElite;
-    private ArrayList<Individuo> elites;
     private long semilla;
     private int evaluaciones;
     private String tipoCruce;
@@ -39,9 +37,7 @@ public class AlgEvolutivoEstacionario_Clase03_Grupo04 {
         this.prob2opt = prob2opt;
         this.maxEvaluaciones = maxEvaluacion;
         this.maxTiempo = maxTiempo;
-        this.cantidadElite = cantidadElites;
         this.generacionActual = new ArrayList<>();
-        this.elites = new ArrayList<>();
         this.tipoCruce = TipoCruce;
         excepcionesInicializacion();
     }
@@ -58,9 +54,8 @@ public class AlgEvolutivoEstacionario_Clase03_Grupo04 {
 
         while ((System.currentTimeMillis() - tiempoInicio) < maxTiempo && evaluaciones < maxEvaluaciones)
         {
-
-            ArrayList<Individuo> postTorneo = torneoEstacionario();
-            remplazamiento(postTorneo);
+            ArrayList<Individuo> postTorneo = torneoEstacionario();  //realiza el cruce a la vez que consigue "los mejores" de la gen actual
+            remplazamiento(postTorneo);    //realiza el mismo el torneo para remplazar
         }
     }
 
@@ -68,7 +63,7 @@ public class AlgEvolutivoEstacionario_Clase03_Grupo04 {
     {
         ArrayList<Individuo> elitesPermanecen = new ArrayList<>();
 
-        for (Individuo hijo : hijos) {
+        for (Individuo hijo : hijos) {   //bucle que se encarga de revisar si los elites estan o no para poder mantenerlos
             if (!generacionActual.contains(hijo)) {
                 elitesPermanecen.add(hijo);
             }
@@ -80,23 +75,24 @@ public class AlgEvolutivoEstacionario_Clase03_Grupo04 {
     private void torneokworst(ArrayList<Individuo> permanecen)
     {
         double peor;
-        int pos = 0;
+        int posPeor = 0;
         for(int i =0; i<permanecen.size() ; i++)
         {
             peor = Double.MIN_VALUE;
             for (int j = 0;j < kworst; j++)
             {
                 int r = random.nextInt(0, tamPoblacion);
+
                 evaluaciones++;
 
                 if (peor < generacionActual.get(r).getCosteTotal())
                 {
                     peor = generacionActual.get(r).getCosteTotal();
-                    pos = r;
+                    posPeor = r;
 
                 }
             }
-            generacionActual.get(pos).setVectorSol(permanecen.get(i).get_vector_sol());
+            generacionActual.get(posPeor).setVectorSol(permanecen.get(i).get_vector_sol());
         }
 
     }
