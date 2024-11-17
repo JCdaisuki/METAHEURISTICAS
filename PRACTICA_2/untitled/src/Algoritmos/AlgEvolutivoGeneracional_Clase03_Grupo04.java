@@ -304,7 +304,9 @@ public class AlgEvolutivoGeneracional_Clase03_Grupo04
         ArrayList<Individuo> hijos = new ArrayList<>();
         Individuo hijo1 = new Individuo(lector);
         Individuo hijo2 = new Individuo(lector);
+
         cruceMOC(p1.get_vector_sol(), p2.get_vector_sol(), hijo1, hijo2);
+
         hijos.add(hijo1);
         hijos.add(hijo2);
         return hijos;
