@@ -43,7 +43,7 @@ public class Main
                 //ejecutarEvolutivoGeneracional(generacional, dniNumerico, lector, ite, log);
 
                 //Ejecución Evolutivo Estacionario
-                ejecutarEvolutivoGeneracional(generacional, dniNumerico, lector, ite, log);
+                //ejecutarEvolutivoGeneracional(generacional, dniNumerico, lector, ite, log);
 
                 log.cerrarLog();
             }

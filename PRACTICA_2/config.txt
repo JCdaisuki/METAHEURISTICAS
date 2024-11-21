@@ -19,7 +19,7 @@ String seed = "20622008";
 // Configuración general
 int nIteraciones = 3;
 
-// Configuración Generacional
+// Configuración Algortimo
 int tamPoblacion = 100; 
 double porcientoGeneracion = 0.8; 
 int tamCandidatosGreedy = 5; 
