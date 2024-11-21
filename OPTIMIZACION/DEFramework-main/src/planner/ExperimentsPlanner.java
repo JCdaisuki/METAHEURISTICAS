@@ -11,7 +11,7 @@ public class ExperimentsPlanner {
     private static int NUM_EXPERIMENTS;
 
     public static void main(String[] args) {
-        Reader.loadConfigurationData("rsc/dataConfig.properties");
+        Reader.loadConfigurationData("~/C:/Users/JuanC/Music/CURSO_2425/METAHEURISTICAS/OPTIMIZACION/DEFramework-main/rsc/optimizacion.properties");
         NUM_EXPERIMENTS = Reader.getNumExperiments();
         Experiment experiment;
         for (int i = 0; i < NUM_EXPERIMENTS; i++) {

@@ -64,6 +64,11 @@ public class Population {
         activeSubPopulations = false;
     }
 
+    public int PopulationSize()
+    {
+        return population.size();
+    }
+
     /**
      * Constructor given a set of individuals.
      *
